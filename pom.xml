@@ -1,0 +1,166 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>io.github.nishadchayanakhawa</groupId>
+	<artifactId>test-estimate-hub</artifactId>
+	<version>1.0.0</version>
+	<name>Test Estimate Hub</name>
+
+	<!-- Spring Boot Parent -->
+	<parent>
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent -->
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.0.6</version>
+		<relativePath />
+	</parent>
+
+	<build>
+		<plugins>
+			<!--
+			https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${maven-compiler-plugin.source}</source>
+					<target>${maven-compiler-plugin.target}</target>
+					<encoding>${maven-compiler-plugin.encoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>${surefireArgLine}</argLine>
+					<skip>${skipTests}</skip>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco-maven-plugin.version}</version>
+				<configuration>
+					<excludes>
+						<exclude>**/TestEstimateHubApplication.class</exclude>
+						<exclude>**/testestimatehub/configurations/*.class</exclude>
+					</excludes>
+					<skip>${skipCodeCoverageCheck}</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<id>pre-unit-test</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<propertyName>surefireArgLine</propertyName>
+						</configuration>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<rule>
+									<element>BUNDLE</element>
+									<limits>
+										<limit>
+											<counter>INSTRUCTION</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>
+												${jacoco-instruction-coveredratio.minimum}</minimum>
+										</limit>
+										<limit>
+											<counter>BRANCH</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>
+												${jacoco-branch-coveredratio.minimum}</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-data-jpa -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+	</dependencies>
+
+	<profiles>
+		<profile>
+			<id>skipTests</id>
+			<activation>
+				<property>
+					<name>SkipTests</name>
+				</property>
+			</activation>
+			<properties>
+				<skipCodeCoverageCheck>true</skipCodeCoverageCheck>
+				<skipTests>true</skipTests>
+			</properties>
+		</profile>
+	</profiles>
+
+	<properties>
+		<maven-compiler-plugin.source>17</maven-compiler-plugin.source>
+		<maven-compiler-plugin.target>17</maven-compiler-plugin.target>
+		<maven-compiler-plugin.encoding>UTF-8</maven-compiler-plugin.encoding>
+		<jacoco-instruction-coveredratio.minimum>0.8</jacoco-instruction-coveredratio.minimum>
+		<jacoco-branch-coveredratio.minimum>0.8</jacoco-branch-coveredratio.minimum>
+		<jacoco-maven-plugin.version>0.8.9</jacoco-maven-plugin.version>
+		<spring.profiles.active>dev</spring.profiles.active>
+		<skipCodeCoverageCheck>false</skipCodeCoverageCheck>
+		<skipTests>false</skipTests>
+		<sonar.cpd.exclusions>
+			**/io/github/nishadchayanakhawa/testestimatehub/model/*,
+			**/io/github/nishadchayanakhawa/testestimatehub/model/dto/*
+		</sonar.cpd.exclusions>
+		<sonar.coverage.exclusions>
+			**/io/github/nishadchayanakhawa/testestimatehub/*,
+			**/io/github/nishadchayanakhawa/testestimatehub/configurations/*
+		</sonar.coverage.exclusions>
+	</properties>
+
+</project>
