@@ -27,7 +27,7 @@ public class ModelTests extends AbstractTestNGSpringContextTests {
 				.save(applicationConfigurationDTO);
 		TestFactory.recordTestStep(String.format("Persisted application configuration: %s", savedApplicationConfigurationDTO));
 		applicationConfigurationDTO.setId(savedApplicationConfigurationDTO.getId());
-		Assertions.assertThat(savedApplicationConfigurationDTO.toString()).isEqualTo(savedApplicationConfigurationDTO.toString());
+		Assertions.assertThat(savedApplicationConfigurationDTO).hasToString(savedApplicationConfigurationDTO.toString());
 	}
 
 	@Test(dependsOnMethods= {"addApplicationConfigurationTest"})

@@ -18,6 +18,7 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  */
 @Service
 public class SecurityFilterConfiguration {
+	private static final String H2_CONSOLE_CONTEXT_MATCHER="/h2-console/**";
 
 	/**
 	 * <b>Method Name</b>: h2ConsoleSecurityFilterChain<br>
@@ -34,13 +35,12 @@ public class SecurityFilterConfiguration {
 	SecurityFilterChain h2ConsoleSecurityFilterChain(HttpSecurity http) throws Exception {
 		return 
 				//for h2-console,
-				http.securityMatcher(AntPathRequestMatcher.antMatcher("/h2-console/**"))
-					.authorizeHttpRequests(auth -> {
+				http.securityMatcher(AntPathRequestMatcher.antMatcher(H2_CONSOLE_CONTEXT_MATCHER))
+					.authorizeHttpRequests(auth -> 
 						//disable spring security
-						auth.requestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")).permitAll();
-					})
+						auth.requestMatchers(AntPathRequestMatcher.antMatcher(H2_CONSOLE_CONTEXT_MATCHER)).permitAll())
 					//disable CSRF
-					.csrf(csrf -> csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher("/h2-console/**")))
+					.csrf(csrf -> csrf.ignoringRequestMatchers(AntPathRequestMatcher.antMatcher(H2_CONSOLE_CONTEXT_MATCHER)))
 					//disable header frame requirement
 					.headers(headers -> headers.frameOptions().disable()).build();
 	}
