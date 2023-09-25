@@ -39,27 +39,27 @@ public class ApplicationConfiguration {
 	
 	//dummy configuration key to validate case-insensitive uniqueness of 
 	//application, module and sub-module
-	@Column(nullable=false,length=77,unique=true)
+	@Column(nullable=false,length=107,unique=true)
 	@Getter(AccessLevel.NONE)
 	@Setter(AccessLevel.NONE)
 	private String configurationKey;
 	
 	//application name
-	@Column(nullable=false,length=25)
+	@Column(nullable=false,length=35)
 	@NotBlank(message="Application is required")
-	@Size(max=25,message="{maxLength25}")
+	@Size(max=25,message="{maxLength35}")
 	private String application;
 
 	//module name
-	@Column(nullable=false,length=25)
+	@Column(nullable=false,length=35)
 	@NotBlank(message="Module is required")
-	@Size(max=25,message="{maxLength25}")
+	@Size(max=25,message="{maxLength35}")
 	private String module;
 	
 	//sub-module name
-	@Column(nullable=false,length=25)
+	@Column(nullable=false,length=35)
 	@NotBlank(message="Sub-Module is required")
-	@Size(max=25,message="{maxLength25}")
+	@Size(max=25,message="{maxLength35}")
 	private String subModule;
 	
 	//base test script count
