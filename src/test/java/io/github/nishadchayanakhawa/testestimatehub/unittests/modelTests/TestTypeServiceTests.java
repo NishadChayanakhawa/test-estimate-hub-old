@@ -30,7 +30,7 @@ public class TestTypeServiceTests extends AbstractTestNGSpringContextTests {
 		TestTypeDTO testTypeSavedDTO=this.testTypeService.save(testTypeToSave);
 		TestFactory.recordTestStep(String.format("Saved test type: %s", testTypeSavedDTO));
 		Assertions.assertThat(testTypeSavedDTO.getName()).isEqualTo(TestTypeServiceTests.testTypeToSave.getName());
-		Assertions.assertThat(testTypeSavedDTO.getId()).isNotNull().isGreaterThan(0);
+		Assertions.assertThat(testTypeSavedDTO.getId()).isNotNull().isPositive();
 		TestTypeServiceTests.savedTestTypeId=testTypeSavedDTO.getId();
 	}
 	
@@ -71,5 +71,13 @@ public class TestTypeServiceTests extends AbstractTestNGSpringContextTests {
 		TestTypeDTO testType=this.testTypeService.get(TestTypeServiceTests.savedTestTypeId);
 		TestFactory.recordTestStep(String.format("Teest type: ", testType));
 		Assertions.assertThat(testType.getName()).isEqualTo(TestTypeServiceTests.testTypeToSave.getName());
+	}
+	
+	@Test(dependsOnMethods= {"getTestType"})
+	public void deleteTestType() {
+		TestFactory.recordTest("Delete test types");
+		Assertions.assertThatNoException().isThrownBy(() -> {
+			this.testTypeService.delete(new TestTypeDTO(TestTypeServiceTests.savedTestTypeId,null,0,0,0));
+		});
 	}
 }
