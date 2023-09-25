@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * <b>Class Name</b>: ApplicationConfigurationTransactionException<br>
+ * <b>Class Name</b>: TestTypeTransactionException<br>
  * <b>Description</b>: Thrown in case of constraint violation while persisting application
  * configuration. Associated with status code 400-BAD REQUEST<br>
  * @author nishad.chayanakhawa

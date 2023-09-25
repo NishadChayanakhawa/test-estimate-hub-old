@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
- * <b>Class Name</b>: DuplicateApplicationConfigurationException<br>
+ * <b>Class Name</b>: DuplicateTestTypeException<br>
  * <b>Description</b>: Thrown when duplicate entry is persisted.
  * Associated with Http Status 409-CONFLICT<br>
  * @author nishad.chayanakhawa
