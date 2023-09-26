@@ -61,15 +61,15 @@ public class TestTypeServiceTests extends AbstractTestNGSpringContextTests {
 	public void testTypeList() {
 		TestFactory.recordTest("Get list of all test types");
 		List<TestTypeDTO> testTypes=this.testTypeService.getAll();
-		TestFactory.recordTestStep(String.format("Test types: ", testTypes));
+		TestFactory.recordTestStep(String.format("Test types: %s", testTypes));
 		Assertions.assertThat(testTypes).isNotEmpty();
 	}
 	
 	@Test(dependsOnMethods= {"testTypeList"})
 	public void getTestType() {
-		TestFactory.recordTest("Get test types");
+		TestFactory.recordTest("Get test type");
 		TestTypeDTO testType=this.testTypeService.get(TestTypeServiceTests.savedTestTypeId);
-		TestFactory.recordTestStep(String.format("Teest type: ", testType));
+		TestFactory.recordTestStep(String.format("Teest type: %s", testType));
 		Assertions.assertThat(testType.getName()).isEqualTo(TestTypeServiceTests.testTypeToSave.getName());
 	}
 	
