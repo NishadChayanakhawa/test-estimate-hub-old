@@ -1,4 +1,4 @@
-package io.github.nishadchayanakhawa.testestimatehub.unittests;
+package io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests;
 
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ApplicationConfigurationService;
@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 @SpringBootTest(classes = TestEstimateHubApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
-public class ModelTests extends AbstractTestNGSpringContextTests {
+public class ApplicationConfigurationServiceTests extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	private ApplicationConfigurationService applicationConfigurationService;

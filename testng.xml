@@ -8,7 +8,11 @@
 	<test name="Data Tests" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.unittests.ModelTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ApplicationConfigurationServiceTests" />
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.TestTypeServiceTests" />
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ChangeTypeServiceTests" />
 		</classes>
 	</test>
 </suite>
