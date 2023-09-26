@@ -11,8 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ApplicationConfigurationService;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.TestTypeService;
+import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ChangeTypeService;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ApplicationConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.TestTypeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ChangeTypeDTO;
 
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
@@ -27,6 +29,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 	@Autowired
 	private TestTypeService testTypeService;
 	
+	@Autowired
+	private ChangeTypeService changeTypeService;
+	
 	@Override
 	public void run(String... args) throws Exception {
 		CommandLineAppStartupRunner.logger.info("Application started!!!");
@@ -34,6 +39,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 		
 		this.loadApplicationConfiguration();
 		this.loadTestType();
+		this.loadChangeType();
 	}
 	
 	private void loadApplicationConfiguration() {
@@ -53,6 +59,20 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 				.forEach(testTypeDTO -> {
 					TestTypeDTO testTypeSavedDTO=this.testTypeService.save(testTypeDTO);
 					logger.info("Test Type Loaded: {}",testTypeSavedDTO);
+				});
+		}
+	}
+	
+	private void loadChangeType() {
+		if(this.changeTypeService.getAll().isEmpty()) {
+			Arrays.asList(
+					new ChangeTypeDTO(null,"Significant",1.2d,20d,20d,10d),
+					new ChangeTypeDTO(null,"Major",1.0d,15d,15d,10d),
+					new ChangeTypeDTO(null,"Minor",0.8d,0d,10d,5d),
+					new ChangeTypeDTO(null,"Incident",0.6d,0d,5d,5d)).stream()
+				.forEach(changeTypeDTO -> {
+					ChangeTypeDTO changeTypeSavedDTO=this.changeTypeService.save(changeTypeDTO);
+					logger.info("Change Type Loaded: {}",changeTypeSavedDTO);
 				});
 		}
 	}

@@ -13,6 +13,9 @@
 				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.TestTypeServiceTests" />
 			<class
 				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ChangeTypeServiceTests" />
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ReleaseServiceTests" />
+
 		</classes>
 	</test>
 </suite>
