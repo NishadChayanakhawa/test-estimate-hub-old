@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import java.util.List;
 import java.util.Set;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ApplicationConfigurationDTO;
 
@@ -25,6 +24,6 @@ public class ChangeDTO {
 	private String changeTypeName;
 	private LocalDate startDate;
 	private LocalDate endDate;
-	List<RequirementDTO> requirements;
+	Set<RequirementDTO> requirements;
 	Set<ApplicationConfigurationDTO> impactedArea;
 }

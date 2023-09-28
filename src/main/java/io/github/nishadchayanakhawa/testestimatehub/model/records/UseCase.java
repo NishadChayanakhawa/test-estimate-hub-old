@@ -6,26 +6,39 @@ import io.github.nishadchayanakhawa.testestimatehub.model.configurations.TestTyp
 import java.util.Set;
 import java.util.HashSet;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Embeddable
+@Entity
+@Table(name = "TEH_USE_CASE")
+@Getter
+@Setter
+@NoArgsConstructor
 public class UseCase {
-	@Column(nullable = false, length = 15)
-	@NotBlank(message = "Identifier is required")
-	@Size(max = 15, message = "{maxLength15}")
-	private String identifier;
+	@Column(name = "OWNER_REQUIREMENT_ID")
+	private Long requirementId;
 	
+	// id
+	@Id@Column(name = "USE_CASE_ID")
+	@GeneratedValue
+	private Long id;
+
 	@Column(nullable = false, length = 35)
 	@NotBlank(message = "Summary is required")
 	@Size(max = 35, message = "{maxLength35}")
@@ -63,8 +76,7 @@ public class UseCase {
 	private Complexity testValidationComplexity;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "TEH_USE_CASE_APPLICABLE_TEST_TYPE",
-		joinColumns = {@JoinColumn(name = "CHANGE_ID"),@JoinColumn(name = "REQUIREMENT_IDENTIFIER"),@JoinColumn(name = "USE_CASE_IDENTIFIER")},
+	@JoinTable(name = "TEH_USE_CASE_APPLICABLE_TEST_TYPE", joinColumns = { @JoinColumn(name = "USE_CASE_ID") }, 
 		inverseJoinColumns = @JoinColumn(name = "TEST_TYPE_ID"))
 	private Set<TestType> applicableTestTypes = new HashSet<>();
 }

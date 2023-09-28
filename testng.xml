@@ -41,4 +41,10 @@
 				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.RequirementDataTests" />
 		</classes>
 	</test>
+	<test name="Unit Tests : Use Case" parallel="methods" thread-count="5">
+		<classes>
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.UseCaseDataTests" />
+		</classes>
+	</test>
 </suite>

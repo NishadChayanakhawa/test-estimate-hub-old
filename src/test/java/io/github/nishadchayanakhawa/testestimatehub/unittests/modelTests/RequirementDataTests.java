@@ -1,7 +1,6 @@
 package io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 import org.assertj.core.api.Assertions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +31,7 @@ public class RequirementDataTests extends AbstractTestNGSpringContextTests {
 
 	private static ChangeDTO changeToSave = new ChangeDTO(null, null, null, "TV", "Task Vault", 2L, null,
 			LocalDate.now(), LocalDate.now().plusDays(7),
-			List.of(new RequirementDTO("BN01","User Management","LOW")),
+			Set.of(new RequirementDTO("BN01","User Management","LOW")),
 			Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null)));
 	private static ChangeDTO savedChange;
 
@@ -66,7 +65,7 @@ public class RequirementDataTests extends AbstractTestNGSpringContextTests {
 	@Test(dependsOnMethods= {"addRequirement"})
 	public void deleteRequirement() {
 		TestFactory.recordTest("Requirement: Delete");
-		savedChange.getRequirements().remove(0);
+		savedChange.getRequirements().removeIf(requirement -> "BN01".equals(requirement.getIdentifier()));
 		this.changeService.save(savedChange);
 		savedChange=this.changeService.get(savedChange.getId());
 		Assertions.assertThat(savedChange.getRequirements()).hasSize(1);
@@ -76,11 +75,14 @@ public class RequirementDataTests extends AbstractTestNGSpringContextTests {
 	@Test(dependsOnMethods= {"deleteRequirement"})
 	public void updateRequirement() {
 		TestFactory.recordTest("Requirement: Update");
-		savedChange.getRequirements().get(0).setIdentifier("BN01");
-		savedChange.getRequirements().get(0).setComplexityCode("HIGH");
+		savedChange.getRequirements().stream()
+			.forEach(requirement -> {
+				requirement.setComplexityCode("HIGH");
+				requirement.setIdentifier("BN01");
+			});
 		this.changeService.save(savedChange);
 		savedChange=this.changeService.get(savedChange.getId());
-		Assertions.assertThat(savedChange.getRequirements().get(0).getComplexityDisplayValue()).isEqualTo("High");
+		Assertions.assertThat(savedChange.getRequirements().stream().toList().get(0).getComplexityDisplayValue()).isEqualTo("High");
 		TestFactory.recordTestStep(String.format("Change with updated requirement: %s",savedChange));
 	}
 	

@@ -20,8 +20,6 @@ import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
 import io.github.nishadchayanakhawa.testestimatehub.model.configurations.ApplicationConfiguration;
@@ -71,7 +69,7 @@ public class Change {
 			orphanRemoval=true,
 			fetch=FetchType.EAGER)
 	@JoinColumn(name="OWNER_CHANGE_ID", referencedColumnName="CHANGE_ID")
-	List<Requirement> requirements = new ArrayList<>();
+	Set<Requirement> requirements = new HashSet<>();
 	
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name="TEH_CHANGE_IMPACT",

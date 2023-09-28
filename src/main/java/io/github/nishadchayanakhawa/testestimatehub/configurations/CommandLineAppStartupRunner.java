@@ -22,6 +22,7 @@ import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ChangeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ReleaseDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.RequirementDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ChangeTypeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.UseCaseDTO;
 
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
@@ -104,14 +105,16 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 		if (this.changeService.getAll().isEmpty()) {
 			ChangeDTO changeToSave = new ChangeDTO(null, 1L, null, "TEH", "Test Estimate Hub", 1L, null,
 					LocalDate.now(), LocalDate.now().plusDays(7),
-					Arrays.asList(new RequirementDTO("BN01", "User Management", "LOW"),
+					Set.of(new RequirementDTO("BN01", "User Management", "LOW"),
 							new RequirementDTO("BN02", "Configuration", "MEDIUM")),
 					Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null),
 							new ApplicationConfigurationDTO(2L,null,null,null,0,null,null)));
 			ChangeDTO changeSavedDTO = this.changeService.save(changeToSave);
 			
 			changeSavedDTO=this.changeService.get(changeSavedDTO.getId());
-			changeSavedDTO.getRequirements().add(new RequirementDTO("BN03", "Configuration", "MEDIUM"));
+			RequirementDTO requirement=new RequirementDTO("BN03", "Configuration", "MEDIUM");
+			requirement.setUseCases(Set.of(new UseCaseDTO("1st Use Case",1L,2,"LOW","LOW","LOW","LOW",Set.of(new TestTypeDTO(1L,null,0d,0d,0d),new TestTypeDTO(2L,null,0d,0d,0d)))));
+			changeSavedDTO.getRequirements().add(requirement);
 			changeSavedDTO = this.changeService.save(changeSavedDTO);
 			logger.info("Change saved: {}", changeSavedDTO);
 		}

@@ -35,7 +35,7 @@ public class ChangeServiceTests extends AbstractTestNGSpringContextTests {
 
 	private static ChangeDTO changeToSave = new ChangeDTO(null, null, null, "ID", "IntelliDash", 1L, null,
 			LocalDate.now(), LocalDate.now().plusDays(7),
-			List.of(new RequirementDTO("BN01","User Management","LOW")),
+			Set.of(new RequirementDTO("BN01","User Management","LOW")),
 			Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null)));
 	private static Long savedChangeId = 0L;
 	private static Long savedReleaseId=0L;
@@ -63,7 +63,7 @@ public class ChangeServiceTests extends AbstractTestNGSpringContextTests {
 		TestFactory.recordTest("Change: Duplicate Change Impact");
 		ChangeDTO changeToSave = new ChangeDTO(null, null, null, "DM", "Dummy", 1L, null,
 				LocalDate.now(), LocalDate.now().plusDays(7),
-				List.of(new RequirementDTO("BN01","User Management","LOW")),
+				Set.of(new RequirementDTO("BN01","User Management","LOW")),
 				Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null),new ApplicationConfigurationDTO(1L,null,null,null,0,null,null)));
 		changeToSave.setReleaseId(savedReleaseId);
 		TestFactory.recordTestStep(String.format("Saving change: %s", changeToSave));

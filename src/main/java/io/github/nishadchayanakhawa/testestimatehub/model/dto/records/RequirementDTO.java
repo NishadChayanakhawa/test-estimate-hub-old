@@ -1,7 +1,7 @@
 package io.github.nishadchayanakhawa.testestimatehub.model.dto.records;
 
+import java.util.Set;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +34,8 @@ public class RequirementDTO {
 	
 	@Setter(AccessLevel.NONE)
 	private String complexityDisplayValue;
+	
+	Set<UseCaseDTO> useCases;
 	
 //	List<UseCaseDTO> useCases=new ArrayList<>();
 }
