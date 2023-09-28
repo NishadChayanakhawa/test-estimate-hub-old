@@ -1,22 +1,36 @@
 package io.github.nishadchayanakhawa.testestimatehub.model.records;
 
 import io.github.nishadchayanakhawa.testestimatehub.model.configurations.Complexity;
-import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.util.List;
-import java.util.ArrayList;
-@Embeddable
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Entity
+@Table(name = "TEH_REQUIREMENT", uniqueConstraints = {
+		@UniqueConstraint(name = "TEH_UNIQUE_REQUIREMENT_PER_CHANGE", columnNames = { "OWNER_CHANGE_ID", "IDENTIFIER" }) })
+@Getter
+@Setter
+@NoArgsConstructor
 public class Requirement {
+	@Column(name = "OWNER_CHANGE_ID")
+	private Long changeId;
+
+	// id
+	@Id
+	@GeneratedValue
+	private Long id;
+
 	@Column(nullable = false, length = 15)
 	@NotBlank(message = "Identifier is required")
 	@Size(max = 15, message = "{maxLength15}")
@@ -32,10 +46,4 @@ public class Requirement {
 	@NotNull(message = "Complexity is required")
 	@Enumerated(EnumType.ORDINAL)
 	private Complexity complexity;
-	
-//	@ElementCollection(fetch = FetchType.EAGER)
-//	@CollectionTable(name = "TEH_USE_CASE", joinColumns = {@JoinColumn(name = "CHANGE_ID"),@JoinColumn(name = "REQUIREMENT_IDENTIFIER")},
-//			uniqueConstraints= @UniqueConstraint(name="TEH_UNIQUE_USE_CASE_PER_REQUIREMENT",
-//					columnNames= {"CHANGE_ID","REQUIREMENT_IDENTIFIER","IDENTIFIER"}))
-//	List<UseCase> useCases=new ArrayList<>();
 }

@@ -1,11 +1,9 @@
 package io.github.nishadchayanakhawa.testestimatehub.model.records;
 
 import java.time.LocalDate;
-
 import io.github.nishadchayanakhawa.testestimatehub.model.configurations.ChangeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.CollectionTable;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -14,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotBlank;
@@ -26,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
 import io.github.nishadchayanakhawa.testestimatehub.model.configurations.ApplicationConfiguration;
+
 @Entity
 @Table(name = "TEH_CHANGE", uniqueConstraints = {
 		@UniqueConstraint(name = "UNIQUE_TEH_CHANGE_IDENTIFIER", columnNames = { "IDENTIFIER" }) })
@@ -36,6 +36,7 @@ public class Change {
 	// id
 	@Id
 	@GeneratedValue
+	@Column(name="CHANGE_ID")
 	private Long id;
 
 	@ManyToOne
@@ -66,10 +67,10 @@ public class Change {
 	@Column(nullable = false)
 	private LocalDate endDate;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "TEH_REQUIREMENT", joinColumns = @JoinColumn(name = "CHANGE_ID"),
-			uniqueConstraints= @UniqueConstraint(name="TEH_UNIQUE_REQUIREMENT_PER_CHANGE",
-					columnNames= {"CHANGE_ID","IDENTIFIER"}))
+	@OneToMany(cascade= CascadeType.ALL,
+			orphanRemoval=true,
+			fetch=FetchType.EAGER)
+	@JoinColumn(name="OWNER_CHANGE_ID", referencedColumnName="CHANGE_ID")
 	List<Requirement> requirements = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.EAGER)

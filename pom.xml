@@ -49,6 +49,7 @@
 					<excludes>
 						<exclude>**/TestEstimateHubApplication.class</exclude>
 						<exclude>**/testestimatehub/configurations/*.class</exclude>
+						<exclude>**/dto/**</exclude>
 					</excludes>
 					<skip>${skipCodeCoverageCheck}</skip>
 				</configuration>
@@ -208,12 +209,13 @@
 		<skipCodeCoverageCheck>false</skipCodeCoverageCheck>
 		<skipTests>false</skipTests>
 		<sonar.cpd.exclusions>
-			**/io/github/nishadchayanakhawa/testestimatehub/model/*,
-			**/io/github/nishadchayanakhawa/testestimatehub/model/dto/*
+			**/io/github/nishadchayanakhawa/testestimatehub/model/**,
+			**/io/github/nishadchayanakhawa/testestimatehub/model/dto/**
 		</sonar.cpd.exclusions>
 		<sonar.coverage.exclusions>
 			**/io/github/nishadchayanakhawa/testestimatehub/*,
-			**/io/github/nishadchayanakhawa/testestimatehub/configurations/*
+			**/io/github/nishadchayanakhawa/testestimatehub/configurations/*,
+			**/dto/**
 		</sonar.coverage.exclusions>
 	</properties>
 

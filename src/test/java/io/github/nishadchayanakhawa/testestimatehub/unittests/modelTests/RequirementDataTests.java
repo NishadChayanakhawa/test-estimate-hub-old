@@ -32,7 +32,7 @@ public class RequirementDataTests extends AbstractTestNGSpringContextTests {
 
 	private static ChangeDTO changeToSave = new ChangeDTO(null, null, null, "TV", "Task Vault", 2L, null,
 			LocalDate.now(), LocalDate.now().plusDays(7),
-			List.of(new RequirementDTO("BN01","User Management","LOW",null)),
+			List.of(new RequirementDTO("BN01","User Management","LOW")),
 			Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null)));
 	private static ChangeDTO savedChange;
 
@@ -54,11 +54,13 @@ public class RequirementDataTests extends AbstractTestNGSpringContextTests {
 	@Test
 	public void addRequirement() {
 		TestFactory.recordTest("Requirement: Add new");
-		savedChange.getRequirements().add(new RequirementDTO("BN02","Configuration","MEDIUM",null));
+		savedChange=this.changeService.get(savedChange.getId());
+		savedChange.getRequirements().add(new RequirementDTO("BN02","Configuration","MEDIUM"));
+		TestFactory.recordTestStep(String.format("Adding requirement new change: %s",savedChange));
 		this.changeService.save(savedChange);
 		savedChange=this.changeService.get(savedChange.getId());
-		Assertions.assertThat(savedChange.getRequirements()).hasSize(2);
 		TestFactory.recordTestStep(String.format("Change with added requirement: %s",savedChange));
+		Assertions.assertThat(savedChange.getRequirements()).hasSize(2);
 	}
 	
 	@Test(dependsOnMethods= {"addRequirement"})
@@ -76,7 +78,6 @@ public class RequirementDataTests extends AbstractTestNGSpringContextTests {
 		TestFactory.recordTest("Requirement: Update");
 		savedChange.getRequirements().get(0).setIdentifier("BN01");
 		savedChange.getRequirements().get(0).setComplexityCode("HIGH");
-		savedChange.getRequirements().get(0).setComplexityDisplayValue(null);
 		this.changeService.save(savedChange);
 		savedChange=this.changeService.get(savedChange.getId());
 		Assertions.assertThat(savedChange.getRequirements().get(0).getComplexityDisplayValue()).isEqualTo("High");
@@ -86,7 +87,7 @@ public class RequirementDataTests extends AbstractTestNGSpringContextTests {
 	@Test(dependsOnMethods= {"updateRequirement"})
 	public void duplicateRequirementIdentifier() {
 		TestFactory.recordTest("Requirement: Duplicate identifier");
-		savedChange.getRequirements().add(new RequirementDTO("BN01","Task Processing","HIGH",null));
+		savedChange.getRequirements().add(new RequirementDTO("BN01","Task Processing","HIGH"));
 		Assertions.assertThatThrownBy(() -> {
 			this.changeService.save(savedChange);
 		}).isInstanceOf(DuplicateRequirementException.class)

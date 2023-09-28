@@ -104,10 +104,15 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 		if (this.changeService.getAll().isEmpty()) {
 			ChangeDTO changeToSave = new ChangeDTO(null, 1L, null, "TEH", "Test Estimate Hub", 1L, null,
 					LocalDate.now(), LocalDate.now().plusDays(7),
-					Arrays.asList(new RequirementDTO("BN01", "User Management", "LOW", null)),
+					Arrays.asList(new RequirementDTO("BN01", "User Management", "LOW"),
+							new RequirementDTO("BN02", "Configuration", "MEDIUM")),
 					Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null),
 							new ApplicationConfigurationDTO(2L,null,null,null,0,null,null)));
 			ChangeDTO changeSavedDTO = this.changeService.save(changeToSave);
+			
+			changeSavedDTO=this.changeService.get(changeSavedDTO.getId());
+			changeSavedDTO.getRequirements().add(new RequirementDTO("BN03", "Configuration", "MEDIUM"));
+			changeSavedDTO = this.changeService.save(changeSavedDTO);
 			logger.info("Change saved: {}", changeSavedDTO);
 		}
 	}
