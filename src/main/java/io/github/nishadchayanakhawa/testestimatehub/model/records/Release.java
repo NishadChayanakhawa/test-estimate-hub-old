@@ -36,13 +36,13 @@ public class Release {
 	private Long id;
 
 	// identifier
-	@Column(nullable = false, length = 25)
-	@NotBlank(message = "Release name is required")
+	@Column(nullable = false, length = 15)
+	@NotBlank(message = "Release identifier is required")
 	@Size(max = 15, message = "{maxLength15}")
 	private String identifier;
 
 	// name
-	@Column(nullable = false, length = 25)
+	@Column(nullable = false, length = 35)
 	@NotBlank(message = "Release name is required")
 	@Size(max = 35, message = "{maxLength35}")
 	private String name;

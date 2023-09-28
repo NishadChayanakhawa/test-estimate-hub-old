@@ -3,6 +3,7 @@ package io.github.nishadchayanakhawa.testestimatehub.configurations;
 //import section
 //model mapper
 import org.modelmapper.ModelMapper;
+import org.modelmapper.config.Configuration;
 //spring boot libraries
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,10 @@ public class BeanCollection {
 	 */
 	@Bean
 	public ModelMapper modelMapper() {
-		return new ModelMapper();
+		ModelMapper modelMapper=new ModelMapper();
+		modelMapper.getConfiguration()
+				  .setFieldMatchingEnabled(true)
+				  .setFieldAccessLevel(Configuration.AccessLevel.PRIVATE);
+		return modelMapper;
 	}
 }
