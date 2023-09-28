@@ -62,6 +62,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 				"Module1", "Sub-Module1", 6, "LOW", null);
 		ApplicationConfigurationDTO savedApplicationConfigurationDTO = applicationConfigurationService
 				.save(applicationConfigurationDTO);
+		applicationConfigurationService
+				.save(new ApplicationConfigurationDTO(null, "Application1",
+						"Module1", "Sub-Module2", 6, "LOW", null));
 		logger.info("App Configuration: {}", savedApplicationConfigurationDTO);
 	}
 
@@ -102,8 +105,8 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 			ChangeDTO changeToSave = new ChangeDTO(null, 1L, null, "TEH", "Test Estimate Hub", 1L, null,
 					LocalDate.now(), LocalDate.now().plusDays(7),
 					Arrays.asList(new RequirementDTO("BN01", "User Management", "LOW", null)),
-					Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null)));
-					//List.of(new RequirementDTO("BN01", "User Management", "LOW", null)));
+					Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null),
+							new ApplicationConfigurationDTO(2L,null,null,null,0,null,null)));
 			ChangeDTO changeSavedDTO = this.changeService.save(changeToSave);
 			logger.info("Change saved: {}", changeSavedDTO);
 		}
