@@ -14,11 +14,14 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 //repositories, entities and exceptions
 import io.github.nishadchayanakhawa.testestimatehub.repositories.records.ChangeRepository;
+import io.github.nishadchayanakhawa.testestimatehub.repositories.records.RequirementRepository;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateChangeException;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateChangeImpactException;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateRequirementException;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ChangeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.RequirementDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.records.Change;
+import io.github.nishadchayanakhawa.testestimatehub.model.records.Requirement;
 
 /**
  * <b>Class Name</b>: ChangeService<br>
@@ -34,6 +37,10 @@ public class ChangeService {
 	// change type repository
 	@Autowired
 	private ChangeRepository changeRepository;
+
+	// requirement repository
+	@Autowired
+	private RequirementRepository requirementRepository;
 
 	// model mapper
 	@Autowired
@@ -63,15 +70,15 @@ public class ChangeService {
 			if (e.getMessage().contains("TEH_UNIQUE_REQUIREMENT_PER_CHANGE")) {
 				// throw exception when requirement identifier is not unique
 				throw (DuplicateRequirementException) new DuplicateRequirementException(
-						"Please review identifiers used for requirements. Single change record cannot have duplicate identifiers.").initCause(e);
-			} else if(e.getMessage().contains("PUBLIC.PRIMARY_KEY_6E ON PUBLIC.TEH_CHANGE_IMPACT")) {
+						"Please review identifiers used for requirements. Single change record cannot have duplicate identifiers.")
+						.initCause(e);
+			} else if (e.getMessage().contains("PUBLIC.PRIMARY_KEY_6E ON PUBLIC.TEH_CHANGE_IMPACT")) {
 				// throw exception when app configuration identifier is not unique
 				throw (DuplicateChangeImpactException) new DuplicateChangeImpactException(
 						"Please remove duplicate entries from impacted area.").initCause(e);
-			}
-			else {
+			} else {
 				// throw exception when change identifier is not unique
-				logger.error("[][]: {}",e.getMessage());
+				logger.error("[][]: {}", e.getMessage());
 				throw (DuplicateChangeException) new DuplicateChangeException(
 						String.format("Change '%s' already exists.", changeToSaveDTO.getIdentifier())).initCause(e);
 			}
@@ -128,5 +135,30 @@ public class ChangeService {
 		logger.debug("Deleting change: {}", changeToDeleteDTO);
 		this.changeRepository.deleteById(changeToDeleteDTO.getId());
 		logger.debug("Deleted change successfully.");
+	}
+
+	public RequirementDTO getRequirement(Long id) {
+		logger.debug("Looking up requirement with id: {}", id);
+		RequirementDTO requirement = modelMapper.map(this.requirementRepository.findById(id).orElseThrow(),
+				RequirementDTO.class);
+		logger.debug("Requirement located: {}", requirement);
+		return requirement;
+	}
+
+	public RequirementDTO saveUseCases(RequirementDTO requirementWithUseCasesToSave) {
+		logger.debug("Saving use cases within requirement: {}", requirementWithUseCasesToSave);
+		RequirementDTO originalRequirement = this.getRequirement(requirementWithUseCasesToSave.getId());
+		originalRequirement.setUseCases(requirementWithUseCasesToSave.getUseCases());
+		
+		originalRequirement.getUseCases().stream().forEach(useCase -> {
+			if(useCase.getRequirementId()==null) {
+				useCase.setRequirementId(originalRequirement.getId());
+			}
+		});
+
+		RequirementDTO savedRequirementWithUseCases = modelMapper.map(
+				this.requirementRepository.save(modelMapper.map(originalRequirement, Requirement.class)),
+				RequirementDTO.class);
+		return savedRequirementWithUseCases;
 	}
 }
