@@ -108,7 +108,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 					Set.of(new RequirementDTO("BN01", "User Management", "LOW"),
 							new RequirementDTO("BN02", "Configuration", "MEDIUM")),
 					Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null),
-							new ApplicationConfigurationDTO(2L,null,null,null,0,null,null)));
+							new ApplicationConfigurationDTO(2L,null,null,null,0,null,null)),null);
 			ChangeDTO changeSavedDTO = this.changeService.save(changeToSave);
 			
 			changeSavedDTO=this.changeService.get(changeSavedDTO.getId());
@@ -116,6 +116,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 			requirement.setUseCases(Set.of(new UseCaseDTO("1st Use Case",1L,2,"LOW","LOW","LOW","LOW",Set.of(new TestTypeDTO(1L,null,0d,0d,0d),new TestTypeDTO(2L,null,0d,0d,0d)))));
 			changeSavedDTO.getRequirements().add(requirement);
 			changeSavedDTO = this.changeService.save(changeSavedDTO);
+			this.changeService.generateEstimates(changeSavedDTO.getId());
 			logger.info("Change saved: {}", changeSavedDTO);
 		}
 	}

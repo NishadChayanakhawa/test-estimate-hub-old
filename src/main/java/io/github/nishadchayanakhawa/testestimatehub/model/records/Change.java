@@ -91,4 +91,8 @@ public class Change {
 		joinColumns = @JoinColumn(name = "CHANGE_ID"), 
 		inverseJoinColumns = @JoinColumn(name = "APPLICATION_CONFIGURATION_ID"))
 	Set<ApplicationConfiguration> impactedArea = new HashSet<>();
+	
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	@JoinColumn(name = "OWNER_CHANGE_ID", referencedColumnName = "CHANGE_ID")
+	private Set<Estimation> estimations=new HashSet<>();
 }

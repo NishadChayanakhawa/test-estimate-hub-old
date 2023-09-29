@@ -11,7 +11,7 @@ import lombok.ToString;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EstimationDetailDTO {
+public class EstimationDTO {
 	private Long changeId;
 	private Long id;
 	

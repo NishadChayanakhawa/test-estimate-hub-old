@@ -3,6 +3,11 @@ package io.github.nishadchayanakhawa.testestimatehub.services.records;
 //import section
 //java-util
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
 //model mapper
 import org.modelmapper.ModelMapper;
 //logger
@@ -15,13 +20,19 @@ import org.springframework.stereotype.Service;
 //repositories, entities and exceptions
 import io.github.nishadchayanakhawa.testestimatehub.repositories.records.ChangeRepository;
 import io.github.nishadchayanakhawa.testestimatehub.repositories.records.RequirementRepository;
+import io.github.nishadchayanakhawa.testestimatehub.repositories.records.UseCaseRepository;
+import io.github.nishadchayanakhawa.testestimatehub.repositories.configurations.TestTypeRepository;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateChangeException;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateChangeImpactException;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateRequirementException;
+import io.github.nishadchayanakhawa.testestimatehub.model.configurations.TestType;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ChangeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.RequirementDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.records.Change;
+import io.github.nishadchayanakhawa.testestimatehub.model.records.EstimationDetail;
+import io.github.nishadchayanakhawa.testestimatehub.model.records.Estimation;
 import io.github.nishadchayanakhawa.testestimatehub.model.records.Requirement;
+import io.github.nishadchayanakhawa.testestimatehub.model.records.UseCase;
 
 /**
  * <b>Class Name</b>: ChangeService<br>
@@ -37,6 +48,12 @@ public class ChangeService {
 	// change type repository
 	@Autowired
 	private ChangeRepository changeRepository;
+
+	@Autowired
+	private UseCaseRepository useCaseRepository;
+
+	@Autowired
+	private TestTypeRepository testTypeRepository;
 
 	// requirement repository
 	@Autowired
@@ -149,9 +166,9 @@ public class ChangeService {
 		logger.debug("Saving use cases within requirement: {}", requirementWithUseCasesToSave);
 		RequirementDTO originalRequirement = this.getRequirement(requirementWithUseCasesToSave.getId());
 		originalRequirement.setUseCases(requirementWithUseCasesToSave.getUseCases());
-		
+
 		originalRequirement.getUseCases().stream().forEach(useCase -> {
-			if(useCase.getRequirementId()==null) {
+			if (useCase.getRequirementId() == null) {
 				useCase.setRequirementId(originalRequirement.getId());
 			}
 		});
@@ -159,6 +176,74 @@ public class ChangeService {
 		RequirementDTO savedRequirementWithUseCases = modelMapper.map(
 				this.requirementRepository.save(modelMapper.map(originalRequirement, Requirement.class)),
 				RequirementDTO.class);
+		logger.debug("Saved use cases within requirement: {}", savedRequirementWithUseCases);
 		return savedRequirementWithUseCases;
+	}
+
+	private EstimationDetail calculateEstimate(UseCase useCase, TestType testType) {
+		EstimationDetail estimate = new EstimationDetail();
+		estimate.setTestCaseCount((int) Math
+				.round((useCase.getBusinessFunctionality().getBaseTestScriptCount() * useCase.getDataVariationCount())
+						* (testType.getRelativeTestCaseCountPercentage() / 100)));
+		estimate.setExecutionCount(estimate.getTestCaseCount());
+		estimate.setReExecutionCount(
+				(int) Math.round(estimate.getExecutionCount() * (testType.getReExecutionPercentage() / 100)));
+		estimate.setAdditionalCycleExecutionCount((int) Math
+				.round(estimate.getExecutionCount() * (testType.getAdditionalCycleExecutionPercentage() / 100)));
+		estimate.setTotalExecutionCount(estimate.getExecutionCount() + estimate.getReExecutionCount()
+				+ estimate.getAdditionalCycleExecutionCount());
+		estimate.setUseCaseId(useCase.getId());
+		estimate.setTestType(testType);
+		return estimate;
+	}
+
+	private Set<EstimationDetail> calculateEstimates(UseCase useCase) {
+		Set<EstimationDetail> estimations = new HashSet<>();
+		useCase.getApplicableTestTypes().stream().forEach(testType -> {
+			estimations.add(this.calculateEstimate(useCase, testType));
+		});
+		return estimations;
+	}
+
+	public ChangeDTO generateEstimates(Long changeId) {
+		Change change = this.changeRepository.findById(changeId).orElseThrow();
+		Map<Long, List<EstimationDetail>> estimationsByTestTypeMap = new HashMap<>();
+
+		Set<Estimation> estimations = new HashSet<>();
+
+		change.getRequirements().stream().forEach(requirement -> {
+			requirement.getUseCases().stream().forEach(useCase -> {
+				useCase.setEstimations(this.calculateEstimates(useCase));
+				useCase.getEstimations().stream().forEach(estimationDetail -> {
+					if (!estimationsByTestTypeMap.containsKey(estimationDetail.getTestType().getId())) {
+						estimationsByTestTypeMap.put(estimationDetail.getTestType().getId(), new ArrayList<>());
+					}
+					estimationsByTestTypeMap.get(estimationDetail.getTestType().getId()).add(estimationDetail);
+				});
+			});
+		});
+
+		this.testTypeRepository.findAll().stream().forEach(testType -> {
+			if (estimationsByTestTypeMap.containsKey(testType.getId())) {
+				Estimation estimation = new Estimation();
+				estimation.setChangeId(change.getId());
+				estimation.setTestType(testType);
+				estimation.setTestCaseCount(estimationsByTestTypeMap.get(testType.getId()).stream()
+						.mapToInt(EstimationDetail::getTestCaseCount).sum());
+				estimation.setExecutionCount(estimationsByTestTypeMap.get(testType.getId()).stream()
+						.mapToInt(EstimationDetail::getExecutionCount).sum());
+				estimation.setReExecutionCount(estimationsByTestTypeMap.get(testType.getId()).stream()
+						.mapToInt(EstimationDetail::getReExecutionCount).sum());
+				estimation.setAdditionalCycleExecutionCount(estimationsByTestTypeMap.get(testType.getId()).stream()
+						.mapToInt(EstimationDetail::getAdditionalCycleExecutionCount).sum());
+				estimation.setTotalExecutionCount(estimationsByTestTypeMap.get(testType.getId()).stream()
+						.mapToInt(EstimationDetail::getTotalExecutionCount).sum());
+				estimations.add(estimation);
+			}
+		});
+
+		change.setEstimations(estimations);
+
+		return this.save(modelMapper.map(change, ChangeDTO.class));
 	}
 }

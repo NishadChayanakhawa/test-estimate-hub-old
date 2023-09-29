@@ -45,7 +45,9 @@ public class ChangeDTO {
 	// end date
 	private LocalDate endDate;
 	// requirements
-	Set<RequirementDTO> requirements;
+	private Set<RequirementDTO> requirements;
 	// impacted areas
-	Set<ApplicationConfigurationDTO> impactedArea;
+	private Set<ApplicationConfigurationDTO> impactedArea;
+	
+	private Set<EstimationDTO> estimations;
 }

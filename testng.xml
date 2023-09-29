@@ -47,4 +47,10 @@
 				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.UseCaseDataTests" />
 		</classes>
 	</test>
+	<test name="Unit Tests : Estimation" parallel="methods" thread-count="5">
+		<classes>
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.EstimationDataTests" />
+		</classes>
+	</test>
 </suite>

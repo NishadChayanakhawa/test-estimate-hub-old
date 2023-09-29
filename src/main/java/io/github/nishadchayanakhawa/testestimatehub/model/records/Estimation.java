@@ -13,13 +13,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "TEH_ESTIMATION_DETAIL")
+@Table(name = "TEH_ESTIMATION")
 @Getter
 @Setter
 @NoArgsConstructor
-public class EstimationDetail {
-	@Column(name = "OWNER_USE_CASE_ID")
-	private Long useCaseId;
+public class Estimation {
+	@Column(name = "OWNER_CHANGE_ID")
+	private Long changeId;
 
 	// id
 	@Id

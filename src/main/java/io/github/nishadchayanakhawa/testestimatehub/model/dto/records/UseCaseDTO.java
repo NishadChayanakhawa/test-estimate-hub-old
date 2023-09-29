@@ -5,7 +5,6 @@ package io.github.nishadchayanakhawa.testestimatehub.model.dto.records;
 import java.util.Set;
 //configuration dto
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.TestTypeDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.records.EstimationDetail;
 //lombok
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -68,5 +67,5 @@ public class UseCaseDTO {
 	@NonNull
 	private Set<TestTypeDTO> applicableTestTypes;
 	
-	private Set<EstimationDetail> estimations;
+	private Set<EstimationDetailDTO> estimations;
 }
