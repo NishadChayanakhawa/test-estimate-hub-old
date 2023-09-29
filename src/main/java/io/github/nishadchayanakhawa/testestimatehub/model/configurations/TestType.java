@@ -23,7 +23,7 @@ import lombok.Setter;
  * @author nishad.chayanakhawa
  */
 @Entity
-@Table(name = "TEH_TEST_TYPE",
+@Table(name = "TEH_TEST_TYPE_CONFIGURATION",
 	uniqueConstraints = { @UniqueConstraint(name = "UNIQUE_TEH_TEST_TYPE_NAME", columnNames = { "NAME" }) })
 @Getter
 @Setter

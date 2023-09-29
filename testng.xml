@@ -5,32 +5,46 @@
 		<listener
 			class-name="io.nishadc.automationtestingframework.testngcustomization.ReportGenerator"></listener>
 	</listeners>
-	<test name="Configuration Data Tests" parallel="methods" thread-count="5">
+	<test name="Unit Tests : Application Configuration" parallel="methods" thread-count="5">
 		<classes>
 			<class
 				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ApplicationConfigurationServiceTests" />
+		</classes>
+	</test>
+	<test name="Unit Tests : Test Type" parallel="methods" thread-count="5">
+		<classes>
 			<class
 				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.TestTypeServiceTests" />
+		</classes>
+	</test>
+	<test name="Unit Tests : Change Type" parallel="methods" thread-count="5">
+		<classes>
 			<class
 				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ChangeTypeServiceTests" />
 		</classes>
 	</test>
-	<test name="Release Data Tests" parallel="methods" thread-count="5">
+	<test name="Unit Tests : Release" parallel="methods" thread-count="5">
 		<classes>
 			<class
 				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ReleaseServiceTests" />
 		</classes>
 	</test>
-	<test name="Change Data Tests" parallel="methods" thread-count="5">
+	<test name="Unit Tests : Change" parallel="methods" thread-count="5">
 		<classes>
 			<class
 				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ChangeServiceTests" />
 		</classes>
 	</test>
-	<test name="Requirement Data Tests" parallel="methods" thread-count="5">
+	<test name="Unit Tests : Requirement" parallel="methods" thread-count="5">
 		<classes>
 			<class
 				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.RequirementDataTests" />
+		</classes>
+	</test>
+	<test name="Unit Tests : Use Case" parallel="methods" thread-count="5">
+		<classes>
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.UseCaseDataTests" />
 		</classes>
 	</test>
 </suite>
