@@ -1,10 +1,14 @@
 package io.github.nishadchayanakhawa.testestimatehub.model.records;
 
+//import section
+//configuration entities
 import io.github.nishadchayanakhawa.testestimatehub.model.configurations.ApplicationConfiguration;
 import io.github.nishadchayanakhawa.testestimatehub.model.configurations.Complexity;
 import io.github.nishadchayanakhawa.testestimatehub.model.configurations.TestType;
+//java utils
 import java.util.Set;
 import java.util.HashSet;
+//jpa
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -17,66 +21,80 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+//jpa validations
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+//lombok
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * <b>Class Name</b>: UseCase<br>
+ * <b>Description</b>: Use case entity.<br>
+ * 
+ * @author nishad.chayanakhawa
+ */
 @Entity
 @Table(name = "TEH_USE_CASE")
 @Getter
 @Setter
 @NoArgsConstructor
 public class UseCase {
+	// requirement
 	@Column(name = "OWNER_REQUIREMENT_ID")
 	private Long requirementId;
-	
+
 	// id
-	@Id@Column(name = "USE_CASE_ID")
+	@Id
+	@Column(name = "USE_CASE_ID")
 	@GeneratedValue
 	private Long id;
 
+	// summary
 	@Column(nullable = false, length = 35)
 	@NotBlank(message = "Summary is required")
 	@Size(max = 35, message = "{maxLength35}")
 	private String summary;
 
+	// corresponding business functionality
 	@ManyToOne
 	@JoinColumn(name = "APPLICATION_CONFIGURATION_ID", nullable = false)
 	private ApplicationConfiguration businessFunctionality;
 
+	// data variation count
 	@Min(value = 1, message = "Data variation count cannot be less than 1.")
 	private int dataVariationCount;
 
-	// complexity
+	// test configuration complexity
 	@Column(nullable = false)
 	@NotNull(message = "Test configuration complexity is required")
 	@Enumerated(EnumType.ORDINAL)
 	private Complexity testConfigurationComplexity;
 
-	// complexity
+	// test data complexity
 	@Column(nullable = false)
 	@NotNull(message = "Test data setup complexity is required")
 	@Enumerated(EnumType.ORDINAL)
 	private Complexity testDataSetupComplexity;
 
-	// complexity
+	// test transaction complexity
 	@Column(nullable = false)
 	@NotNull(message = "Test transaction complexity is required")
 	@Enumerated(EnumType.ORDINAL)
 	private Complexity testTransactionComplexity;
 
-	// complexity
+	// test validation complexity
 	@Column(nullable = false)
 	@NotNull(message = "Test validation complexity is required")
 	@Enumerated(EnumType.ORDINAL)
 	private Complexity testValidationComplexity;
 
+	// test types
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "TEH_USE_CASE_APPLICABLE_TEST_TYPE", joinColumns = { @JoinColumn(name = "USE_CASE_ID") }, 
-		inverseJoinColumns = @JoinColumn(name = "TEST_TYPE_ID"))
+	@JoinTable(name = "TEH_USE_CASE_APPLICABLE_TEST_TYPE", joinColumns = {
+			@JoinColumn(name = "USE_CASE_ID") }, inverseJoinColumns = @JoinColumn(name = "TEST_TYPE_ID"))
 	private Set<TestType> applicableTestTypes = new HashSet<>();
 }
