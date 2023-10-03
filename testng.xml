@@ -53,4 +53,10 @@
 				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.EstimationDataTests" />
 		</classes>
 	</test>
+	<test name="Unit Tests : General Configuration" parallel="methods" thread-count="5">
+		<classes>
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.GeneralConfigurationServiceTests" />
+		</classes>
+	</test>
 </suite>
