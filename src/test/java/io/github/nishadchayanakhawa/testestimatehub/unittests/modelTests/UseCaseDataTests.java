@@ -33,7 +33,7 @@ public class UseCaseDataTests extends AbstractTestNGSpringContextTests {
 
 	private static ChangeDTO changeToSave = new ChangeDTO(null, null, null, "AI", "Artificial Intelligence", 2L, null,
 			LocalDate.now(), LocalDate.now().plusDays(7), Set.of(new RequirementDTO("BN01", "User Management", "LOW")),
-			Set.of(new ApplicationConfigurationDTO(1L, null, null, null, 0, null, null)));
+			Set.of(new ApplicationConfigurationDTO(1L)),null,0,0,0,0,0,0,0);
 	private static ChangeDTO savedChange;
 
 	@BeforeClass(alwaysRun = true)
@@ -55,58 +55,83 @@ public class UseCaseDataTests extends AbstractTestNGSpringContextTests {
 	public void addUseCase() {
 		TestFactory.recordTest("Use Case: Add");
 		UseCaseDTO useCase1 = new UseCaseDTO("1st Use Case", 1L, 2, "LOW", "LOW", "LOW", "LOW",
-				Set.of(new TestTypeDTO(1L, null, 0d, 0d, 0d), new TestTypeDTO(2L, null, 0d, 0d, 0d)));
+				Set.of(new TestTypeDTO(1L), new TestTypeDTO(2L)));
 		UseCaseDTO useCase2 = new UseCaseDTO("2nd Use Case", 1L, 2, "MEDIUM", "MEDIUM", "MEDIUM", "MEDIUM",
-				Set.of(new TestTypeDTO(1L, null, 0d, 0d, 0d)));
+				Set.of(new TestTypeDTO(1L)));
 		Set<UseCaseDTO> useCases = new HashSet<>();
 		useCases.add(useCase1);
 		useCases.add(useCase2);
-		UseCaseDataTests.savedChange.getRequirements().stream()
-				.forEach(requirement -> requirement.setUseCases(useCases));
-		TestFactory.recordTestStep(String.format("Saving with use case: %s", savedChange));
-		this.changeService.save(savedChange);
-		UseCaseDataTests.savedChange = this.changeService.get(UseCaseDataTests.savedChange.getId());
-		TestFactory.recordTestStep(String.format("Saved with use case: %s", savedChange));
-		Assertions.assertThat(savedChange.getRequirements().stream().toList().get(0).getUseCases()).hasSize(2);
+		RequirementDTO requirement=new RequirementDTO();
+		requirement.setId(savedChange.getRequirements().stream().toList().get(0).getId());
+		requirement.setUseCases(useCases);
+		TestFactory.recordTestStep(String.format("Saving with use case: %s", requirement));
+		
+		RequirementDTO savedRequirement=this.changeService.saveUseCases(requirement);
+		savedRequirement=this.changeService.getRequirement(savedRequirement.getId());
+		
+		TestFactory.recordTestStep(String.format("Saved with use case: %s", savedRequirement));
+		Assertions.assertThat(savedRequirement.getUseCases()).hasSize(2);
 	}
 
 	@Test(dependsOnMethods = { "addUseCase" })
 	public void addAnotherUseCase() {
 		TestFactory.recordTest("Use Case: Add Another");
+		savedChange = this.changeService.get(UseCaseDataTests.savedChange.getId());
+		
 		UseCaseDTO useCase1 = new UseCaseDTO("3rd Use Case", 1L, 2, "LOW", "LOW", "LOW", "LOW",
-				Set.of(new TestTypeDTO(1L, null, 0d, 0d, 0d), new TestTypeDTO(2L, null, 0d, 0d, 0d)));
+				Set.of(new TestTypeDTO(1L), new TestTypeDTO(2L)));
 		UseCaseDataTests.savedChange.getRequirements().stream()
 				.forEach(requirement -> requirement.getUseCases().add(useCase1));
-		TestFactory.recordTestStep(String.format("Saving with use case: %s", savedChange));
-		this.changeService.save(savedChange);
-		UseCaseDataTests.savedChange = this.changeService.get(UseCaseDataTests.savedChange.getId());
-		TestFactory.recordTestStep(String.format("Saved with use case: %s", savedChange));
-		Assertions.assertThat(savedChange.getRequirements().stream().toList().get(0).getUseCases()).hasSize(3);
+		
+		RequirementDTO requirement=new RequirementDTO();
+		requirement.setId(savedChange.getRequirements().stream().toList().get(0).getId());
+		requirement.setUseCases(savedChange.getRequirements().stream().toList().get(0).getUseCases());
+		requirement.getUseCases().add(useCase1);
+		
+		TestFactory.recordTestStep(String.format("Saving with use case: %s", requirement));
+		RequirementDTO savedRequirement=this.changeService.saveUseCases(requirement);
+		savedRequirement=this.changeService.getRequirement(savedRequirement.getId());
+		TestFactory.recordTestStep(String.format("Saved with use case: %s", savedRequirement));
+		
+		Assertions.assertThat(savedRequirement.getUseCases()).hasSize(3);
 	}
 
 	@Test(dependsOnMethods = { "addAnotherUseCase" })
 	public void deleteUseCase() {
 		TestFactory.recordTest("Use Case: Delete");
-		UseCaseDataTests.savedChange.getRequirements().stream().forEach(
-				requirement -> requirement.getUseCases().removeIf(useCase -> "1st Use Case".equals(useCase.getSummary())
-						|| "3rd Use Case".equals(useCase.getSummary())));
-		TestFactory.recordTestStep(String.format("Saving with use case: %s", savedChange));
-		this.changeService.save(savedChange);
-		UseCaseDataTests.savedChange = this.changeService.get(UseCaseDataTests.savedChange.getId());
-		TestFactory.recordTestStep(String.format("Saved with use case: %s", savedChange));
-		Assertions.assertThat(savedChange.getRequirements().stream().toList().get(0).getUseCases()).hasSize(1);
+		
+		savedChange = this.changeService.get(UseCaseDataTests.savedChange.getId());
+		RequirementDTO requirement=new RequirementDTO();
+		requirement.setId(savedChange.getRequirements().stream().toList().get(0).getId());
+		requirement.setUseCases(savedChange.getRequirements().stream().toList().get(0).getUseCases());
+		
+		requirement.getUseCases().removeIf(useCase -> "1st Use Case".equals(useCase.getSummary())
+						|| "3rd Use Case".equals(useCase.getSummary()));
+		
+		TestFactory.recordTestStep(String.format("Saving with use case: %s", requirement));
+		RequirementDTO savedRequirement=this.changeService.saveUseCases(requirement);
+		savedRequirement=this.changeService.getRequirement(savedRequirement.getId());
+		
+		TestFactory.recordTestStep(String.format("Saved with use case: %s", savedRequirement));
+		Assertions.assertThat(savedRequirement.getUseCases()).hasSize(1);
 	}
 
 	@Test(dependsOnMethods = { "deleteUseCase" })
 	public void updateUseCase() {
 		TestFactory.recordTest("Use Case: Update");
-		UseCaseDataTests.savedChange.getRequirements().stream().forEach(
-				requirement -> requirement.getUseCases().stream().forEach(useCase -> useCase.setSummary("This should be 1st")));
-		TestFactory.recordTestStep(String.format("Saving with use case: %s", savedChange));
-		this.changeService.save(savedChange);
-		UseCaseDataTests.savedChange = this.changeService.get(UseCaseDataTests.savedChange.getId());
-		TestFactory.recordTestStep(String.format("Saved with use case: %s", savedChange));
-		Assertions.assertThat(savedChange.getRequirements().stream().toList().get(0).getUseCases().stream().toList().get(0).getSummary())
+		savedChange = this.changeService.get(UseCaseDataTests.savedChange.getId());
+		RequirementDTO requirement=new RequirementDTO();
+		requirement.setId(savedChange.getRequirements().stream().toList().get(0).getId());
+		requirement.setUseCases(savedChange.getRequirements().stream().toList().get(0).getUseCases());
+		
+		requirement.getUseCases().forEach(useCase -> useCase.setSummary("This should be 1st"));
+		
+		TestFactory.recordTestStep(String.format("Saving with use case: %s", requirement));
+		RequirementDTO savedRequirement=this.changeService.saveUseCases(requirement);
+		savedRequirement=this.changeService.getRequirement(savedRequirement.getId());
+		
+		TestFactory.recordTestStep(String.format("Saved with use case: %s", savedRequirement));
+		Assertions.assertThat(savedRequirement.getUseCases().stream().toList().get(0).getSummary())
 			.isEqualTo("This should be 1st");
 	}
 }

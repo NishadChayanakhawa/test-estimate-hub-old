@@ -39,4 +39,14 @@ public class ChangeTypeDTO {
 
 	// management effort allocation percentgae
 	private double managementEffortAllocationPercentage;
+
+	public ChangeTypeDTO(String name, double testCaseCountModifier, double testPlanningEffortAllocationPercentage,
+			double testPreparationEffortAllocationPercentage, double managementEffortAllocationPercentage) {
+		this(null, name, testCaseCountModifier, testPlanningEffortAllocationPercentage,
+				testPreparationEffortAllocationPercentage, managementEffortAllocationPercentage);
+	}
+
+	public ChangeTypeDTO(Long id) {
+		this(id, null, 0, 0, 0, 0);
+	}
 }

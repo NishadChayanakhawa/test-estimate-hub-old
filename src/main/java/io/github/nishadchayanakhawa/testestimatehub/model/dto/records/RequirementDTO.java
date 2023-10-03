@@ -25,7 +25,6 @@ import lombok.NonNull;
 @RequiredArgsConstructor
 public class RequirementDTO {
 	// id
-	@Setter(AccessLevel.NONE)
 	private Long id;
 
 	// change id

@@ -20,8 +20,8 @@ public class ApplicationConfigurationServiceTests extends AbstractTestNGSpringCo
 	@Test
 	public void addApplicationConfigurationTest() {
 		TestFactory.recordTest("Add application configuration test");
-		ApplicationConfigurationDTO applicationConfigurationDTO = new ApplicationConfigurationDTO(null,
-				"Test Estimate Hub", "User Management", "N/A", 6, "LOW", null);
+		ApplicationConfigurationDTO applicationConfigurationDTO = new ApplicationConfigurationDTO(
+				"Test Estimate Hub", "User Management", "N/A", 6, "LOW");
 		TestFactory.recordTestStep(String.format("Persisting application configuration: %s", applicationConfigurationDTO));
 		ApplicationConfigurationDTO savedApplicationConfigurationDTO = applicationConfigurationService
 				.save(applicationConfigurationDTO);
@@ -33,8 +33,8 @@ public class ApplicationConfigurationServiceTests extends AbstractTestNGSpringCo
 	@Test(dependsOnMethods= {"addApplicationConfigurationTest"})
 	public void duplicateApplicationConfigurationTest() {
 		TestFactory.recordTest("Add duplicate application configuration test");
-		ApplicationConfigurationDTO applicationConfigurationDTO = new ApplicationConfigurationDTO(null,
-				"Test Estimate Hub", "User Management", "N/A", 6, "LOW", null);
+		ApplicationConfigurationDTO applicationConfigurationDTO = new ApplicationConfigurationDTO(
+				"Test Estimate Hub", "User Management", "N/A", 6, "LOW");
 		TestFactory.recordTestStep(String.format("Persisting application configuration: %s", applicationConfigurationDTO));
 		Assertions.assertThatThrownBy(() -> {
 			applicationConfigurationService.save(applicationConfigurationDTO);
@@ -45,8 +45,8 @@ public class ApplicationConfigurationServiceTests extends AbstractTestNGSpringCo
 	@Test
 	public void invalidApplicationConfigurationTest_zeroTestScripts() {
 		TestFactory.recordTest("Add application configuration test with 0 base test scripts.");
-		ApplicationConfigurationDTO applicationConfigurationDTO = new ApplicationConfigurationDTO(null,
-				"Test Estimate Hub", "Security", "N/A", 0, "LOW", null);
+		ApplicationConfigurationDTO applicationConfigurationDTO = new ApplicationConfigurationDTO(
+				"Test Estimate Hub", "Security", "N/A", 0, "LOW");
 		TestFactory.recordTestStep(String.format("Persisting application configuration: %s", applicationConfigurationDTO));
 		Assertions.assertThatThrownBy(() -> {
 			applicationConfigurationService.save(applicationConfigurationDTO);

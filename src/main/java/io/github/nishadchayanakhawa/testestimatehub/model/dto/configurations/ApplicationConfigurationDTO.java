@@ -11,6 +11,7 @@ import lombok.ToString;
 /**
  * <b>Class Name</b>: ApplicationConfigurationDTO<br>
  * <b>Description</b>: DTO representation of Application Configuration.<br>
+ * 
  * @author nishad.chayanakhawa
  */
 @ToString
@@ -19,18 +20,27 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ApplicationConfigurationDTO {
-	//id
+	// id
 	private Long id;
-	//application name
+	// application name
 	private String application;
-	//module name
+	// module name
 	private String module;
-	//sub-module name
+	// sub-module name
 	private String subModule;
-	//base test script count
+	// base test script count
 	private int baseTestScriptCount;
-	//complexity code
+	// complexity code
 	private String complexityCode;
-	//complexity display value
+	// complexity display value
 	private String complexityDisplayValue;
+
+	public ApplicationConfigurationDTO(Long id) {
+		this(id, null, null, null, 0, null, null);
+	}
+
+	public ApplicationConfigurationDTO(String application, String module, String subModule, int baseTestScriptCount,
+			String complexityCode) {
+		this(null, application, module, subModule, baseTestScriptCount, complexityCode, null);
+	}
 }

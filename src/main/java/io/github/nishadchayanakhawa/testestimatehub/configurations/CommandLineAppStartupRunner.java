@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -16,8 +17,11 @@ import io.github.nishadchayanakhawa.testestimatehub.services.configurations.Test
 import io.github.nishadchayanakhawa.testestimatehub.services.records.ChangeService;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.ReleaseService;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ChangeTypeService;
+import io.github.nishadchayanakhawa.testestimatehub.services.configurations.GeneralConfigurationService;
+import io.github.nishadchayanakhawa.testestimatehub.model.configurations.Complexity;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ApplicationConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.TestTypeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.GeneralConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ChangeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ReleaseDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.RequirementDTO;
@@ -41,6 +45,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 	private ChangeTypeService changeTypeService;
 
 	@Autowired
+	private GeneralConfigurationService generalConfigurationService;
+
+	@Autowired
 	private ChangeService changeService;
 
 	@Autowired
@@ -54,6 +61,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 		this.loadApplicationConfiguration();
 		this.loadTestType();
 		this.loadChangeType();
+		this.loadGeneralConfiguration();
 		this.loadRelease();
 		this.loadChange();
 	}
@@ -64,16 +72,15 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 		ApplicationConfigurationDTO savedApplicationConfigurationDTO = applicationConfigurationService
 				.save(applicationConfigurationDTO);
 		applicationConfigurationService
-				.save(new ApplicationConfigurationDTO(null, "Application1",
-						"Module1", "Sub-Module2", 6, "LOW", null));
+				.save(new ApplicationConfigurationDTO(null, "Application1", "Module1", "Sub-Module2", 6, "LOW", null));
 		logger.info("App Configuration: {}", savedApplicationConfigurationDTO);
 	}
 
 	private void loadTestType() {
 		if (this.testTypeService.getAll().isEmpty()) {
-			Arrays.asList(new TestTypeDTO(null, "System Integration Testing", 100d, 20d, 20d),
-					new TestTypeDTO(null, "Regression Testing", 21d, 10d, 10d),
-					new TestTypeDTO(null, "User Acceptance Testing", 10d, 5d, 5d)).stream().forEach(testTypeDTO -> {
+			Arrays.asList(new TestTypeDTO("System Integration Testing", 100d, 20d, 20d),
+					new TestTypeDTO("Regression Testing", 21d, 10d, 10d),
+					new TestTypeDTO("User Acceptance Testing", 10d, 5d, 5d)).stream().forEach(testTypeDTO -> {
 						TestTypeDTO testTypeSavedDTO = this.testTypeService.save(testTypeDTO);
 						logger.info("Test Type Loaded: {}", testTypeSavedDTO);
 					});
@@ -82,10 +89,10 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
 	private void loadChangeType() {
 		if (this.changeTypeService.getAll().isEmpty()) {
-			Arrays.asList(new ChangeTypeDTO(null, "Significant", 1.2d, 20d, 20d, 10d),
-					new ChangeTypeDTO(null, "Major", 1.0d, 15d, 15d, 10d),
-					new ChangeTypeDTO(null, "Minor", 0.8d, 0d, 10d, 5d),
-					new ChangeTypeDTO(null, "Incident", 0.6d, 0d, 5d, 5d)).stream().forEach(changeTypeDTO -> {
+			Arrays.asList(new ChangeTypeDTO(null, "Significant", 1.4d, 20d, 20d, 10d),
+					new ChangeTypeDTO(null, "Major", 1.2d, 15d, 15d, 10d),
+					new ChangeTypeDTO(null, "Minor", 1.0d, 0d, 10d, 5d),
+					new ChangeTypeDTO(null, "Incident", 0.8d, 0d, 5d, 5d)).stream().forEach(changeTypeDTO -> {
 						ChangeTypeDTO changeTypeSavedDTO = this.changeTypeService.save(changeTypeDTO);
 						logger.info("Change Type Loaded: {}", changeTypeSavedDTO);
 					});
@@ -107,16 +114,32 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 					LocalDate.now(), LocalDate.now().plusDays(7),
 					Set.of(new RequirementDTO("BN01", "User Management", "LOW"),
 							new RequirementDTO("BN02", "Configuration", "MEDIUM")),
-					Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null),
-							new ApplicationConfigurationDTO(2L,null,null,null,0,null,null)));
+					Set.of(new ApplicationConfigurationDTO(1L, null, null, null, 0, null, null),
+							new ApplicationConfigurationDTO(2L, null, null, null, 0, null, null)),
+					null,0,0,0,0,0,0,0);
 			ChangeDTO changeSavedDTO = this.changeService.save(changeToSave);
-			
-			changeSavedDTO=this.changeService.get(changeSavedDTO.getId());
-			RequirementDTO requirement=new RequirementDTO("BN03", "Configuration", "MEDIUM");
-			requirement.setUseCases(Set.of(new UseCaseDTO("1st Use Case",1L,2,"LOW","LOW","LOW","LOW",Set.of(new TestTypeDTO(1L,null,0d,0d,0d),new TestTypeDTO(2L,null,0d,0d,0d)))));
+
+			changeSavedDTO = this.changeService.get(changeSavedDTO.getId());
+			RequirementDTO requirement = new RequirementDTO("BN03", "Configuration", "MEDIUM");
+			requirement.setUseCases(Set.of(new UseCaseDTO("1st Use Case", 1L, 2, "LOW", "LOW", "LOW", "LOW",
+					Set.of(new TestTypeDTO(1L), new TestTypeDTO(2L)))));
 			changeSavedDTO.getRequirements().add(requirement);
 			changeSavedDTO = this.changeService.save(changeSavedDTO);
+			this.changeService.generateEstimates(changeSavedDTO.getId());
 			logger.info("Change saved: {}", changeSavedDTO);
+		}
+	}
+
+	private void loadGeneralConfiguration() {
+		if (this.generalConfigurationService.get().getId() == null) {
+			Map<Complexity, Double> testDesignProductivity = Map.of(Complexity.VERY_LOW, 21d, Complexity.LOW, 18d,
+					Complexity.MEDIUM, 15d, Complexity.HIGH, 12d, Complexity.VERY_HIGH, 9d);
+			Map<Complexity, Double> testExecutionProductivity = Map.of(Complexity.VERY_LOW, 18d, Complexity.LOW, 15d,
+					Complexity.MEDIUM, 12d, Complexity.HIGH, 9d, Complexity.VERY_HIGH, 6d);
+			GeneralConfigurationDTO savedGeneralConfiguration = this.generalConfigurationService
+					.save(new GeneralConfigurationDTO(null, testDesignProductivity, testExecutionProductivity, 10d, 20d,
+							40d, 30d));
+			logger.info("General Configuration saved: {}", savedGeneralConfiguration);
 		}
 	}
 }
