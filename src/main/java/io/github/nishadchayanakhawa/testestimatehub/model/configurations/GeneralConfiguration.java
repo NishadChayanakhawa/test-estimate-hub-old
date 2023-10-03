@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 //java utils
 import java.util.Map;
-import java.util.HashMap;
+import java.util.EnumMap;
 
 /**
  * <b>Class Name</b>: GeneralConfiguration<br>
@@ -42,14 +42,14 @@ public class GeneralConfiguration {
 	@CollectionTable(name="TEH_TEST_DESIGN_PRODUCTIVITY_CONFIGURATION")
 	@MapKeyColumn(name="COMPLEXITY")
 	@Column(name="PRODUCTIVITY")
-	private Map<Complexity,Double> testDesignProductivity=new HashMap<>();
+	private Map<Complexity,Double> testDesignProductivity=new EnumMap<>(Complexity.class);
 	
 	//test execution productivity
 	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="TEH_TEST_EXECUTION_PRODUCTIVITY_CONFIGURATION")
 	@MapKeyColumn(name="COMPLEXITY")
 	@Column(name="PRODUCTIVITY")
-	private Map<Complexity,Double> testExecutionProductivity=new HashMap<>();
+	private Map<Complexity,Double> testExecutionProductivity=new EnumMap<>(Complexity.class);
 	
 	//test configuration complexity weightage
 	@Min(value = 0, message = "Weightage percentage cannot be less than 0.")
