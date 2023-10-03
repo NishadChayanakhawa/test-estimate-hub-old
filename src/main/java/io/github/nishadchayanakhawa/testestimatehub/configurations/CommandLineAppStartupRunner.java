@@ -64,16 +64,15 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 		ApplicationConfigurationDTO savedApplicationConfigurationDTO = applicationConfigurationService
 				.save(applicationConfigurationDTO);
 		applicationConfigurationService
-				.save(new ApplicationConfigurationDTO(null, "Application1",
-						"Module1", "Sub-Module2", 6, "LOW", null));
+				.save(new ApplicationConfigurationDTO(null, "Application1", "Module1", "Sub-Module2", 6, "LOW", null));
 		logger.info("App Configuration: {}", savedApplicationConfigurationDTO);
 	}
 
 	private void loadTestType() {
 		if (this.testTypeService.getAll().isEmpty()) {
-			Arrays.asList(new TestTypeDTO(null, "System Integration Testing", 100d, 20d, 20d),
-					new TestTypeDTO(null, "Regression Testing", 21d, 10d, 10d),
-					new TestTypeDTO(null, "User Acceptance Testing", 10d, 5d, 5d)).stream().forEach(testTypeDTO -> {
+			Arrays.asList(new TestTypeDTO("System Integration Testing", 100d, 20d, 20d),
+					new TestTypeDTO("Regression Testing", 21d, 10d, 10d),
+					new TestTypeDTO("User Acceptance Testing", 10d, 5d, 5d)).stream().forEach(testTypeDTO -> {
 						TestTypeDTO testTypeSavedDTO = this.testTypeService.save(testTypeDTO);
 						logger.info("Test Type Loaded: {}", testTypeSavedDTO);
 					});
@@ -107,13 +106,15 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 					LocalDate.now(), LocalDate.now().plusDays(7),
 					Set.of(new RequirementDTO("BN01", "User Management", "LOW"),
 							new RequirementDTO("BN02", "Configuration", "MEDIUM")),
-					Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null),
-							new ApplicationConfigurationDTO(2L,null,null,null,0,null,null)),null);
+					Set.of(new ApplicationConfigurationDTO(1L, null, null, null, 0, null, null),
+							new ApplicationConfigurationDTO(2L, null, null, null, 0, null, null)),
+					null);
 			ChangeDTO changeSavedDTO = this.changeService.save(changeToSave);
-			
-			changeSavedDTO=this.changeService.get(changeSavedDTO.getId());
-			RequirementDTO requirement=new RequirementDTO("BN03", "Configuration", "MEDIUM");
-			requirement.setUseCases(Set.of(new UseCaseDTO("1st Use Case",1L,2,"LOW","LOW","LOW","LOW",Set.of(new TestTypeDTO(1L,null,0d,0d,0d),new TestTypeDTO(2L,null,0d,0d,0d)))));
+
+			changeSavedDTO = this.changeService.get(changeSavedDTO.getId());
+			RequirementDTO requirement = new RequirementDTO("BN03", "Configuration", "MEDIUM");
+			requirement.setUseCases(Set.of(new UseCaseDTO("1st Use Case", 1L, 2, "LOW", "LOW", "LOW", "LOW",
+					Set.of(new TestTypeDTO(1L), new TestTypeDTO(2L)))));
 			changeSavedDTO.getRequirements().add(requirement);
 			changeSavedDTO = this.changeService.save(changeSavedDTO);
 			this.changeService.generateEstimates(changeSavedDTO.getId());

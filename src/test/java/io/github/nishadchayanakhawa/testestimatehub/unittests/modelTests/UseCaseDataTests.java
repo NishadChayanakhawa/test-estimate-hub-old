@@ -33,7 +33,7 @@ public class UseCaseDataTests extends AbstractTestNGSpringContextTests {
 
 	private static ChangeDTO changeToSave = new ChangeDTO(null, null, null, "AI", "Artificial Intelligence", 2L, null,
 			LocalDate.now(), LocalDate.now().plusDays(7), Set.of(new RequirementDTO("BN01", "User Management", "LOW")),
-			Set.of(new ApplicationConfigurationDTO(1L, null, null, null, 0, null, null)),null);
+			Set.of(new ApplicationConfigurationDTO(1L)),null);
 	private static ChangeDTO savedChange;
 
 	@BeforeClass(alwaysRun = true)
@@ -55,9 +55,9 @@ public class UseCaseDataTests extends AbstractTestNGSpringContextTests {
 	public void addUseCase() {
 		TestFactory.recordTest("Use Case: Add");
 		UseCaseDTO useCase1 = new UseCaseDTO("1st Use Case", 1L, 2, "LOW", "LOW", "LOW", "LOW",
-				Set.of(new TestTypeDTO(1L, null, 0d, 0d, 0d), new TestTypeDTO(2L, null, 0d, 0d, 0d)));
+				Set.of(new TestTypeDTO(1L), new TestTypeDTO(2L)));
 		UseCaseDTO useCase2 = new UseCaseDTO("2nd Use Case", 1L, 2, "MEDIUM", "MEDIUM", "MEDIUM", "MEDIUM",
-				Set.of(new TestTypeDTO(1L, null, 0d, 0d, 0d)));
+				Set.of(new TestTypeDTO(1L)));
 		Set<UseCaseDTO> useCases = new HashSet<>();
 		useCases.add(useCase1);
 		useCases.add(useCase2);
@@ -79,7 +79,7 @@ public class UseCaseDataTests extends AbstractTestNGSpringContextTests {
 		savedChange = this.changeService.get(UseCaseDataTests.savedChange.getId());
 		
 		UseCaseDTO useCase1 = new UseCaseDTO("3rd Use Case", 1L, 2, "LOW", "LOW", "LOW", "LOW",
-				Set.of(new TestTypeDTO(1L, null, 0d, 0d, 0d), new TestTypeDTO(2L, null, 0d, 0d, 0d)));
+				Set.of(new TestTypeDTO(1L), new TestTypeDTO(2L)));
 		UseCaseDataTests.savedChange.getRequirements().stream()
 				.forEach(requirement -> requirement.getUseCases().add(useCase1));
 		

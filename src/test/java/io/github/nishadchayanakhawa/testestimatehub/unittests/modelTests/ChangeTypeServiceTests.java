@@ -20,7 +20,7 @@ public class ChangeTypeServiceTests extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private ChangeTypeService changeTypeService;
 	
-	private static ChangeTypeDTO changeTypeToSave=new ChangeTypeDTO(null,"Add Change Type",1.2d,21d,10d,10d);
+	private static ChangeTypeDTO changeTypeToSave=new ChangeTypeDTO("Add Change Type",1.2d,21d,10d,10d);
 	private static Long savedChangeTypeId=0L;
 	
 	@Test
@@ -47,7 +47,7 @@ public class ChangeTypeServiceTests extends AbstractTestNGSpringContextTests {
 	@Test
 	public void transactionErrorChangeType() {
 		TestFactory.recordTest("Add change type to cause transaction error");
-		ChangeTypeDTO changeTypeToSaveDTO=new ChangeTypeDTO(null,"Error Change Type",0.2,-21d,101d,10d);
+		ChangeTypeDTO changeTypeToSaveDTO=new ChangeTypeDTO("Error Change Type",0.2,-21d,101d,10d);
 		TestFactory.recordTestStep(String.format("Saving error injected change type: %s", changeTypeToSaveDTO));
 		Assertions.assertThatThrownBy(() -> {
 			this.changeTypeService.save(changeTypeToSaveDTO);
@@ -77,7 +77,7 @@ public class ChangeTypeServiceTests extends AbstractTestNGSpringContextTests {
 	public void deleteChangeType() {
 		TestFactory.recordTest("Delete change types");
 		Assertions.assertThatNoException().isThrownBy(() -> {
-			this.changeTypeService.delete(new ChangeTypeDTO(ChangeTypeServiceTests.savedChangeTypeId,null,0,0,0,0));
+			this.changeTypeService.delete(new ChangeTypeDTO(ChangeTypeServiceTests.savedChangeTypeId));
 		});
 	}
 }

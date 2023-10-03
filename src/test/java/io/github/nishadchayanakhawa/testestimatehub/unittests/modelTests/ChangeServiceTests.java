@@ -36,7 +36,7 @@ public class ChangeServiceTests extends AbstractTestNGSpringContextTests {
 	private static ChangeDTO changeToSave = new ChangeDTO(null, null, null, "ID", "IntelliDash", 1L, null,
 			LocalDate.now(), LocalDate.now().plusDays(7),
 			Set.of(new RequirementDTO("BN01","User Management","LOW")),
-			Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null)),null);
+			Set.of(new ApplicationConfigurationDTO(1L)),null);
 	private static Long savedChangeId = 0L;
 	private static Long savedReleaseId=0L;
 
@@ -64,7 +64,7 @@ public class ChangeServiceTests extends AbstractTestNGSpringContextTests {
 		ChangeDTO changeToSave = new ChangeDTO(null, null, null, "DM", "Dummy", 1L, null,
 				LocalDate.now(), LocalDate.now().plusDays(7),
 				Set.of(new RequirementDTO("BN01","User Management","LOW")),
-				Set.of(new ApplicationConfigurationDTO(1L,null,null,null,0,null,null),new ApplicationConfigurationDTO(1L,null,null,null,0,null,null))
+				Set.of(new ApplicationConfigurationDTO(1L),new ApplicationConfigurationDTO(1L))
 				,null);
 		changeToSave.setReleaseId(savedReleaseId);
 		TestFactory.recordTestStep(String.format("Saving change: %s", changeToSave));

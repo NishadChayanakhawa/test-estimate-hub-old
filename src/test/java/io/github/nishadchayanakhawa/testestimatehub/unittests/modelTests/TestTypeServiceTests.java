@@ -20,7 +20,7 @@ public class TestTypeServiceTests extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private TestTypeService testTypeService;
 	
-	private static TestTypeDTO testTypeToSave=new TestTypeDTO(null,"Add Test Type",21d,10d,10d);
+	private static TestTypeDTO testTypeToSave=new TestTypeDTO("Add Test Type",21d,10d,10d);
 	private static Long savedTestTypeId=0L;
 	
 	@Test
@@ -47,7 +47,7 @@ public class TestTypeServiceTests extends AbstractTestNGSpringContextTests {
 	@Test
 	public void transactionErrorTestType() {
 		TestFactory.recordTest("Add test type to cause transaction error");
-		TestTypeDTO testTypeToSaveDTO=new TestTypeDTO(null,"Error Test Type",-21d,101d,10d);
+		TestTypeDTO testTypeToSaveDTO=new TestTypeDTO("Error Test Type",-21d,101d,10d);
 		TestFactory.recordTestStep(String.format("Saving error injected test type: %s", testTypeToSaveDTO));
 		Assertions.assertThatThrownBy(() -> {
 			this.testTypeService.save(testTypeToSaveDTO);
@@ -77,7 +77,7 @@ public class TestTypeServiceTests extends AbstractTestNGSpringContextTests {
 	public void deleteTestType() {
 		TestFactory.recordTest("Delete test types");
 		Assertions.assertThatNoException().isThrownBy(() -> {
-			this.testTypeService.delete(new TestTypeDTO(TestTypeServiceTests.savedTestTypeId,null,0,0,0));
+			this.testTypeService.delete(new TestTypeDTO(TestTypeServiceTests.savedTestTypeId));
 		});
 	}
 }
