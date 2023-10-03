@@ -16,8 +16,10 @@ import io.github.nishadchayanakhawa.testestimatehub.services.configurations.Test
 import io.github.nishadchayanakhawa.testestimatehub.services.records.ChangeService;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.ReleaseService;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ChangeTypeService;
+import io.github.nishadchayanakhawa.testestimatehub.services.configurations.GeneralConfigurationService;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ApplicationConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.TestTypeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.GeneralConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ChangeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ReleaseDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.RequirementDTO;
@@ -41,6 +43,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 	private ChangeTypeService changeTypeService;
 
 	@Autowired
+	private GeneralConfigurationService generalConfigurationService;
+
+	@Autowired
 	private ChangeService changeService;
 
 	@Autowired
@@ -56,6 +61,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 		this.loadChangeType();
 		this.loadRelease();
 		this.loadChange();
+		this.loadGeneralConfiguration();
 	}
 
 	private void loadApplicationConfiguration() {
@@ -119,6 +125,15 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 			changeSavedDTO = this.changeService.save(changeSavedDTO);
 			this.changeService.generateEstimates(changeSavedDTO.getId());
 			logger.info("Change saved: {}", changeSavedDTO);
+		}
+	}
+
+	private void loadGeneralConfiguration() {
+		if (this.generalConfigurationService.get().getId() == null) {
+			GeneralConfigurationDTO savedGeneralConfiguration = this.generalConfigurationService
+					.save(new GeneralConfigurationDTO(null, 21d, 18d, 15d, 12d, 9d, 18d, 15d, 12d, 9d, 6d, 10d, 20d,
+							40d, 30d));
+			logger.info("General Configuration saved: {}", savedGeneralConfiguration);
 		}
 	}
 }
