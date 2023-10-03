@@ -2,19 +2,23 @@ package io.github.nishadchayanakhawa.testestimatehub.model.configurations;
 
 //import section
 //jpa
-import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.MapKeyColumn;
 import jakarta.persistence.Table;
 //validations
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 //lombok
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+//java utils
+import java.util.Map;
+import java.util.HashMap;
 
 /**
  * <b>Class Name</b>: GeneralConfiguration<br>
@@ -33,22 +37,18 @@ public class GeneralConfiguration {
 	private Long id;
 	
 	//test design productivity
-	@AttributeOverride(name = "forVeryLowComplexity", column = @Column(name = "TEST_DESIGN_PRODUCTIVITY_FOR_VERY_LOW_COMPLEXITY"))
-	@AttributeOverride(name = "forLowComplexity", column = @Column(name = "TEST_DESIGN_PRODUCTIVITY_FOR_LOW_COMPLEXITY"))
-	@AttributeOverride(name = "forMediumComplexity", column = @Column(name = "TEST_DESIGN_PRODUCTIVITY_FOR_MEDIUM_COMPLEXITY"))
-	@AttributeOverride(name = "forHighComplexity", column = @Column(name = "TEST_DESIGN_PRODUCTIVITY_FOR_HIGH_COMPLEXITY"))
-	@AttributeOverride(name = "forVeryHighComplexity", column = @Column(name = "TEST_DESIGN_PRODUCTIVITY_FOR_VERY_HIGH_COMPLEXITY"))
-	@Valid
-	private ValueByComplexity testDesignProductivity;
+	@ElementCollection
+	@CollectionTable(name="TEH_TEST_DESIGN_PRODUCTIVITY_CONFIGURATION")
+	@MapKeyColumn(name="COMPLEXITY")
+	@Column(name="PRODUCTIVITY")
+	private Map<Complexity,Double> testDesignProductivity=new HashMap<>();
 	
 	//test execution productivity
-	@AttributeOverride(name = "forVeryLowComplexity", column = @Column(name = "TEST_EXECUTION_PRODUCTIVITY_FOR_VERY_LOW_COMPLEXITY"))
-	@AttributeOverride(name = "forLowComplexity", column = @Column(name = "TEST_EXECUTION_PRODUCTIVITY_FOR_LOW_COMPLEXITY"))
-	@AttributeOverride(name = "forMediumComplexity", column = @Column(name = "TEST_EXECUTION_PRODUCTIVITY_FOR_MEDIUM_COMPLEXITY"))
-	@AttributeOverride(name = "forHighComplexity", column = @Column(name = "TEST_EXECUTION_PRODUCTIVITY_FOR_HIGH_COMPLEXITY"))
-	@AttributeOverride(name = "forVeryHighComplexity", column = @Column(name = "TEST_EXECUTION_PRODUCTIVITY_FOR_VERY_HIGH_COMPLEXITY"))
-	@Valid
-	private ValueByComplexity testExecutionProductivity;
+	@ElementCollection
+	@CollectionTable(name="TEH_TEST_EXECUTION_PRODUCTIVITY_CONFIGURATION")
+	@MapKeyColumn(name="COMPLEXITY")
+	@Column(name="PRODUCTIVITY")
+	private Map<Complexity,Double> testExecutionProductivity=new HashMap<>();
 	
 	//test configuration complexity weightage
 	@Min(value = 0, message = "Weightage percentage cannot be less than 0.")

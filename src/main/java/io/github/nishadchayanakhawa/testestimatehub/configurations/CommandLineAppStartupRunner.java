@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -17,6 +18,7 @@ import io.github.nishadchayanakhawa.testestimatehub.services.records.ChangeServi
 import io.github.nishadchayanakhawa.testestimatehub.services.records.ReleaseService;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ChangeTypeService;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.GeneralConfigurationService;
+import io.github.nishadchayanakhawa.testestimatehub.model.configurations.Complexity;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ApplicationConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.TestTypeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.GeneralConfigurationDTO;
@@ -130,8 +132,12 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
 	private void loadGeneralConfiguration() {
 		if (this.generalConfigurationService.get().getId() == null) {
+			Map<Complexity, Double> testDesignProductivity = Map.of(Complexity.VERY_LOW, 21d, Complexity.LOW, 18d,
+					Complexity.MEDIUM, 15d, Complexity.HIGH, 12d, Complexity.VERY_HIGH, 9d);
+			Map<Complexity, Double> testExecutionProductivity = Map.of(Complexity.VERY_LOW, 18d, Complexity.LOW, 15d,
+					Complexity.MEDIUM, 12d, Complexity.HIGH, 9d, Complexity.VERY_HIGH, 6d);
 			GeneralConfigurationDTO savedGeneralConfiguration = this.generalConfigurationService
-					.save(new GeneralConfigurationDTO(null, 21d, 18d, 15d, 12d, 9d, 18d, 15d, 12d, 9d, 6d, 10d, 20d,
+					.save(new GeneralConfigurationDTO(null, testDesignProductivity, testExecutionProductivity, 10d, 20d,
 							40d, 30d));
 			logger.info("General Configuration saved: {}", savedGeneralConfiguration);
 		}
