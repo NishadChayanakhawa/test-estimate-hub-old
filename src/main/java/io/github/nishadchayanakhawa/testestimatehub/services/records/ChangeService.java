@@ -24,9 +24,12 @@ import io.github.nishadchayanakhawa.testestimatehub.repositories.configurations.
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateChangeException;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateChangeImpactException;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateRequirementException;
+import io.github.nishadchayanakhawa.testestimatehub.services.configurations.GeneralConfigurationService;
+import io.github.nishadchayanakhawa.testestimatehub.model.configurations.Complexity;
 import io.github.nishadchayanakhawa.testestimatehub.model.configurations.TestType;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ChangeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.RequirementDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.GeneralConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.records.Change;
 import io.github.nishadchayanakhawa.testestimatehub.model.records.EstimationDetail;
 import io.github.nishadchayanakhawa.testestimatehub.model.records.Estimation;
@@ -54,6 +57,9 @@ public class ChangeService {
 	// requirement repository
 	@Autowired
 	private RequirementRepository requirementRepository;
+	
+	@Autowired
+	private GeneralConfigurationService generalConfigurationService;
 
 	// model mapper
 	@Autowired
@@ -175,6 +181,15 @@ public class ChangeService {
 		logger.debug("Saved use cases within requirement: {}", savedRequirementWithUseCases);
 		return savedRequirementWithUseCases;
 	}
+	
+	private Complexity calculateEffectiveComplexity(UseCase useCase) {
+		GeneralConfigurationDTO generalConfiguration=this.generalConfigurationService.get();
+		int effectiveComplexityOrdinal=(int)Math.round((useCase.getTestConfigurationComplexity().ordinal() * (generalConfiguration.getTestConfigurationComplexityPercentage()/100)) +
+		(useCase.getTestDataSetupComplexity().ordinal() * (generalConfiguration.getTestDataComplexityPercentage()/100)) +
+		(useCase.getTestTransactionComplexity().ordinal() * (generalConfiguration.getTestTransactionComplexityPercentage()/100)) +
+		(useCase.getTestValidationComplexity().ordinal() * (generalConfiguration.getTestValidationComplexityPercentage()/100)));
+		return Complexity.values()[effectiveComplexityOrdinal];
+	}
 
 	private EstimationDetail calculateEstimate(UseCase useCase, TestType testType,
 			double testCaseCountModifierByChangeType) {
@@ -191,6 +206,7 @@ public class ChangeService {
 				+ estimate.getAdditionalCycleExecutionCount());
 		estimate.setUseCaseId(useCase.getId());
 		estimate.setTestType(testType);
+		
 		return estimate;
 	}
 
