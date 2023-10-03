@@ -33,7 +33,7 @@ public class UseCaseDataTests extends AbstractTestNGSpringContextTests {
 
 	private static ChangeDTO changeToSave = new ChangeDTO(null, null, null, "AI", "Artificial Intelligence", 2L, null,
 			LocalDate.now(), LocalDate.now().plusDays(7), Set.of(new RequirementDTO("BN01", "User Management", "LOW")),
-			Set.of(new ApplicationConfigurationDTO(1L)),null);
+			Set.of(new ApplicationConfigurationDTO(1L)),null,0,0,0,0,0,0,0);
 	private static ChangeDTO savedChange;
 
 	@BeforeClass(alwaysRun = true)

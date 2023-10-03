@@ -8,6 +8,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.ArrayList;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 //model mapper
 import org.modelmapper.ModelMapper;
 //logger
@@ -57,7 +60,7 @@ public class ChangeService {
 	// requirement repository
 	@Autowired
 	private RequirementRepository requirementRepository;
-	
+
 	@Autowired
 	private GeneralConfigurationService generalConfigurationService;
 
@@ -181,14 +184,24 @@ public class ChangeService {
 		logger.debug("Saved use cases within requirement: {}", savedRequirementWithUseCases);
 		return savedRequirementWithUseCases;
 	}
-	
-	private Complexity calculateEffectiveComplexity(UseCase useCase) {
-		GeneralConfigurationDTO generalConfiguration=this.generalConfigurationService.get();
-		int effectiveComplexityOrdinal=(int)Math.round((useCase.getTestConfigurationComplexity().ordinal() * (generalConfiguration.getTestConfigurationComplexityPercentage()/100)) +
-		(useCase.getTestDataSetupComplexity().ordinal() * (generalConfiguration.getTestDataComplexityPercentage()/100)) +
-		(useCase.getTestTransactionComplexity().ordinal() * (generalConfiguration.getTestTransactionComplexityPercentage()/100)) +
-		(useCase.getTestValidationComplexity().ordinal() * (generalConfiguration.getTestValidationComplexityPercentage()/100)));
+
+	private Complexity calculateEffectiveComplexity(UseCase useCase, GeneralConfigurationDTO generalConfiguration) {
+		int effectiveComplexityOrdinal = ((int) Math.round(((useCase.getTestConfigurationComplexity().ordinal() + 1)
+				* (generalConfiguration.getTestConfigurationComplexityPercentage() / 100))
+				+ ((useCase.getTestDataSetupComplexity().ordinal() + 1)
+						* (generalConfiguration.getTestDataComplexityPercentage() / 100))
+				+ ((useCase.getTestTransactionComplexity().ordinal() + 1)
+						* (generalConfiguration.getTestTransactionComplexityPercentage() / 100))
+				+ ((useCase.getTestValidationComplexity().ordinal() + 1)
+						* (generalConfiguration.getTestValidationComplexityPercentage() / 100)))
+				- 1);
 		return Complexity.values()[effectiveComplexityOrdinal];
+	}
+
+	private static double round(double value) {
+		BigDecimal bd = new BigDecimal(Double.toString(value));
+		bd = bd.setScale(2, RoundingMode.HALF_UP);
+		return bd.doubleValue();
 	}
 
 	private EstimationDetail calculateEstimate(UseCase useCase, TestType testType,
@@ -204,17 +217,26 @@ public class ChangeService {
 				.round(estimate.getExecutionCount() * (testType.getAdditionalCycleExecutionPercentage() / 100)));
 		estimate.setTotalExecutionCount(estimate.getExecutionCount() + estimate.getReExecutionCount()
 				+ estimate.getAdditionalCycleExecutionCount());
+
 		estimate.setUseCaseId(useCase.getId());
 		estimate.setTestType(testType);
-		
+
+		GeneralConfigurationDTO generalConfiguration = this.generalConfigurationService.get();
+		Complexity effectiveComplexity = this.calculateEffectiveComplexity(useCase, generalConfiguration);
+
+		estimate.setDesignEfforts(ChangeService.round((estimate.getTestCaseCount()
+				/ generalConfiguration.getTestDesignProductivity().get(effectiveComplexity)) * 8));
+		estimate.setExecutionEfforts(ChangeService.round((estimate.getTotalExecutionCount()
+				/ generalConfiguration.getTestExecutionProductivity().get(effectiveComplexity)) * 8));
+		estimate.setTotalEfforts(estimate.getDesignEfforts() + estimate.getExecutionEfforts());
+
 		return estimate;
 	}
 
 	private Set<EstimationDetail> calculateEstimates(UseCase useCase, double testCaseCountModifierByChangeType) {
 		Set<EstimationDetail> estimations = new HashSet<>();
-		useCase.getApplicableTestTypes().stream().forEach(testType -> 
-			estimations.add(this.calculateEstimate(useCase, testType, testCaseCountModifierByChangeType))
-		);
+		useCase.getApplicableTestTypes().stream().forEach(testType -> estimations
+				.add(this.calculateEstimate(useCase, testType, testCaseCountModifierByChangeType)));
 		return estimations;
 	}
 
@@ -250,11 +272,30 @@ public class ChangeService {
 						.mapToInt(EstimationDetail::getAdditionalCycleExecutionCount).sum());
 				estimation.setTotalExecutionCount(estimationsByTestTypeMap.get(testType.getId()).stream()
 						.mapToInt(EstimationDetail::getTotalExecutionCount).sum());
+				estimation.setDesignEfforts(estimationsByTestTypeMap.get(testType.getId()).stream()
+						.mapToDouble(EstimationDetail::getDesignEfforts).sum());
+				estimation.setExecutionEfforts(estimationsByTestTypeMap.get(testType.getId()).stream()
+						.mapToDouble(EstimationDetail::getExecutionEfforts).sum());
+				estimation.setTotalEfforts(estimation.getDesignEfforts() + estimation.getExecutionEfforts());
 				estimations.add(estimation);
 			}
 		});
 
 		change.setEstimations(estimations);
+
+		change.setTotalTestCases(change.getEstimations().stream().mapToInt(Estimation::getTestCaseCount).sum());
+		change.setTotalExecutions(change.getEstimations().stream().mapToInt(Estimation::getTotalExecutionCount).sum());
+		change.setEfforts(change.getEstimations().stream().mapToDouble(Estimation::getTotalEfforts).sum());
+
+		change.setTestPlanningEfforts(ChangeService.round(
+				change.getEfforts() * (change.getChangeType().getTestPlanningEffortAllocationPercentage() / 100)));
+		change.setTestPreparationEfforts(ChangeService.round(
+				change.getEfforts() * (change.getChangeType().getTestPreparationEffortAllocationPercentage() / 100)));
+		change.setManagementEfforts(ChangeService
+				.round(change.getEfforts() * (change.getChangeType().getManagementEffortAllocationPercentage() / 100)));
+
+		change.setFinalEfforts(change.getEfforts() + change.getTestPlanningEfforts()
+				+ change.getTestPreparationEfforts() + change.getManagementEfforts());
 
 		return this.save(modelMapper.map(change, ChangeDTO.class));
 	}

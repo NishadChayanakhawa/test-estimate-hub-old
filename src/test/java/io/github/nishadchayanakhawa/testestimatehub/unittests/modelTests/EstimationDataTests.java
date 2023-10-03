@@ -36,7 +36,7 @@ public class EstimationDataTests extends AbstractTestNGSpringContextTests {
 	
 	private static ChangeDTO changeToSave = new ChangeDTO(null, null, null, "TC", "Test Companion", 2L, null,
 			LocalDate.now(), LocalDate.now().plusDays(7), Set.of(new RequirementDTO("BN01", "User Management", "LOW")),
-			Set.of(new ApplicationConfigurationDTO(1L)),null);
+			Set.of(new ApplicationConfigurationDTO(1L)),null,0,0,0,0,0,0,0);
 	
 	private static ChangeDTO savedChange;
 	
@@ -76,6 +76,7 @@ public class EstimationDataTests extends AbstractTestNGSpringContextTests {
 		ChangeDTO change=this.changeService.generateEstimates(savedChange.getId());
 		TestFactory.recordTestStep(String.format("Saved use case: %s", change.getRequirements().stream().toList().get(0).getUseCases()));
 		TestFactory.recordTestStep(String.format("Saved estimations: %s", change.getEstimations()));
+		TestFactory.recordTestStep(String.format("Saved change: %s", change));
 	}
 
 }

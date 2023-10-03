@@ -6,6 +6,7 @@ import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MapKeyColumn;
@@ -37,14 +38,14 @@ public class GeneralConfiguration {
 	private Long id;
 	
 	//test design productivity
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="TEH_TEST_DESIGN_PRODUCTIVITY_CONFIGURATION")
 	@MapKeyColumn(name="COMPLEXITY")
 	@Column(name="PRODUCTIVITY")
 	private Map<Complexity,Double> testDesignProductivity=new HashMap<>();
 	
 	//test execution productivity
-	@ElementCollection
+	@ElementCollection(fetch=FetchType.EAGER)
 	@CollectionTable(name="TEH_TEST_EXECUTION_PRODUCTIVITY_CONFIGURATION")
 	@MapKeyColumn(name="COMPLEXITY")
 	@Column(name="PRODUCTIVITY")

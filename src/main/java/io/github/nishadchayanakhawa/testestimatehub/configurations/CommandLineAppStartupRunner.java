@@ -61,9 +61,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 		this.loadApplicationConfiguration();
 		this.loadTestType();
 		this.loadChangeType();
+		this.loadGeneralConfiguration();
 		this.loadRelease();
 		this.loadChange();
-		this.loadGeneralConfiguration();
 	}
 
 	private void loadApplicationConfiguration() {
@@ -116,7 +116,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 							new RequirementDTO("BN02", "Configuration", "MEDIUM")),
 					Set.of(new ApplicationConfigurationDTO(1L, null, null, null, 0, null, null),
 							new ApplicationConfigurationDTO(2L, null, null, null, 0, null, null)),
-					null);
+					null,0,0,0,0,0,0,0);
 			ChangeDTO changeSavedDTO = this.changeService.save(changeToSave);
 
 			changeSavedDTO = this.changeService.get(changeSavedDTO.getId());

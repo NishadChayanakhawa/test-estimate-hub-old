@@ -24,4 +24,8 @@ public class EstimationDetailDTO {
 	private int reExecutionCount;
 	private int additionalCycleExecutionCount;
 	private int totalExecutionCount;
+	
+	private double designEfforts;
+	private double executionEfforts;
+	private double totalEfforts;
 }
