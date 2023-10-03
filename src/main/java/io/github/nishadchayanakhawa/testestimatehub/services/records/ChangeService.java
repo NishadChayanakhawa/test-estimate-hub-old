@@ -196,9 +196,9 @@ public class ChangeService {
 
 	private Set<EstimationDetail> calculateEstimates(UseCase useCase, double testCaseCountModifierByChangeType) {
 		Set<EstimationDetail> estimations = new HashSet<>();
-		useCase.getApplicableTestTypes().stream().forEach(testType -> {
-			estimations.add(this.calculateEstimate(useCase, testType, testCaseCountModifierByChangeType));
-		});
+		useCase.getApplicableTestTypes().stream().forEach(testType -> 
+			estimations.add(this.calculateEstimate(useCase, testType, testCaseCountModifierByChangeType))
+		);
 		return estimations;
 	}
 
