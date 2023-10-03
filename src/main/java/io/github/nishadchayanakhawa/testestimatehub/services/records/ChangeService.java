@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 //repositories, entities and exceptions
 import io.github.nishadchayanakhawa.testestimatehub.repositories.records.ChangeRepository;
 import io.github.nishadchayanakhawa.testestimatehub.repositories.records.RequirementRepository;
-import io.github.nishadchayanakhawa.testestimatehub.repositories.records.UseCaseRepository;
 import io.github.nishadchayanakhawa.testestimatehub.repositories.configurations.TestTypeRepository;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateChangeException;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateChangeImpactException;
@@ -48,9 +47,6 @@ public class ChangeService {
 	// change type repository
 	@Autowired
 	private ChangeRepository changeRepository;
-
-	@Autowired
-	private UseCaseRepository useCaseRepository;
 
 	@Autowired
 	private TestTypeRepository testTypeRepository;
@@ -180,11 +176,12 @@ public class ChangeService {
 		return savedRequirementWithUseCases;
 	}
 
-	private EstimationDetail calculateEstimate(UseCase useCase, TestType testType) {
+	private EstimationDetail calculateEstimate(UseCase useCase, TestType testType,
+			double testCaseCountModifierByChangeType) {
 		EstimationDetail estimate = new EstimationDetail();
 		estimate.setTestCaseCount((int) Math
-				.round((useCase.getBusinessFunctionality().getBaseTestScriptCount() * useCase.getDataVariationCount())
-						* (testType.getRelativeTestCaseCountPercentage() / 100)));
+				.round(((useCase.getBusinessFunctionality().getBaseTestScriptCount() * useCase.getDataVariationCount())
+						* (testType.getRelativeTestCaseCountPercentage() / 100)) * testCaseCountModifierByChangeType));
 		estimate.setExecutionCount(estimate.getTestCaseCount());
 		estimate.setReExecutionCount(
 				(int) Math.round(estimate.getExecutionCount() * (testType.getReExecutionPercentage() / 100)));
@@ -197,10 +194,10 @@ public class ChangeService {
 		return estimate;
 	}
 
-	private Set<EstimationDetail> calculateEstimates(UseCase useCase) {
+	private Set<EstimationDetail> calculateEstimates(UseCase useCase, double testCaseCountModifierByChangeType) {
 		Set<EstimationDetail> estimations = new HashSet<>();
 		useCase.getApplicableTestTypes().stream().forEach(testType -> {
-			estimations.add(this.calculateEstimate(useCase, testType));
+			estimations.add(this.calculateEstimate(useCase, testType, testCaseCountModifierByChangeType));
 		});
 		return estimations;
 	}
@@ -211,17 +208,16 @@ public class ChangeService {
 
 		Set<Estimation> estimations = new HashSet<>();
 
-		change.getRequirements().stream().forEach(requirement -> {
-			requirement.getUseCases().stream().forEach(useCase -> {
-				useCase.setEstimations(this.calculateEstimates(useCase));
-				useCase.getEstimations().stream().forEach(estimationDetail -> {
-					if (!estimationsByTestTypeMap.containsKey(estimationDetail.getTestType().getId())) {
-						estimationsByTestTypeMap.put(estimationDetail.getTestType().getId(), new ArrayList<>());
-					}
-					estimationsByTestTypeMap.get(estimationDetail.getTestType().getId()).add(estimationDetail);
-				});
+		change.getRequirements().stream().forEach(requirement -> requirement.getUseCases().stream().forEach(useCase -> {
+
+			useCase.setEstimations(this.calculateEstimates(useCase, change.getChangeType().getTestCaseCountModifier()));
+			useCase.getEstimations().stream().forEach(estimationDetail -> {
+				if (!estimationsByTestTypeMap.containsKey(estimationDetail.getTestType().getId())) {
+					estimationsByTestTypeMap.put(estimationDetail.getTestType().getId(), new ArrayList<>());
+				}
+				estimationsByTestTypeMap.get(estimationDetail.getTestType().getId()).add(estimationDetail);
 			});
-		});
+		}));
 
 		this.testTypeRepository.findAll().stream().forEach(testType -> {
 			if (estimationsByTestTypeMap.containsKey(testType.getId())) {

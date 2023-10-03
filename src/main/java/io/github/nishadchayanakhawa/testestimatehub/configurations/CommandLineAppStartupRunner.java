@@ -82,10 +82,10 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
 	private void loadChangeType() {
 		if (this.changeTypeService.getAll().isEmpty()) {
-			Arrays.asList(new ChangeTypeDTO(null, "Significant", 1.2d, 20d, 20d, 10d),
-					new ChangeTypeDTO(null, "Major", 1.0d, 15d, 15d, 10d),
-					new ChangeTypeDTO(null, "Minor", 0.8d, 0d, 10d, 5d),
-					new ChangeTypeDTO(null, "Incident", 0.6d, 0d, 5d, 5d)).stream().forEach(changeTypeDTO -> {
+			Arrays.asList(new ChangeTypeDTO(null, "Significant", 1.4d, 20d, 20d, 10d),
+					new ChangeTypeDTO(null, "Major", 1.2d, 15d, 15d, 10d),
+					new ChangeTypeDTO(null, "Minor", 1.0d, 0d, 10d, 5d),
+					new ChangeTypeDTO(null, "Incident", 0.8d, 0d, 5d, 5d)).stream().forEach(changeTypeDTO -> {
 						ChangeTypeDTO changeTypeSavedDTO = this.changeTypeService.save(changeTypeDTO);
 						logger.info("Change Type Loaded: {}", changeTypeSavedDTO);
 					});
