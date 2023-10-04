@@ -1,4 +1,4 @@
-package io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests;
+package io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests;
 
 import java.util.List;
 

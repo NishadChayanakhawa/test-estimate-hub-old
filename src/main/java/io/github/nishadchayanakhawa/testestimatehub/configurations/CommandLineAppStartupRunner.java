@@ -101,7 +101,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 
 	private void loadRelease() {
 		if (this.releaseService.getAll().isEmpty()) {
-			ReleaseDTO releaseToSave = new ReleaseDTO(null, "OCT-2023", "October 2023 Major Release", LocalDate.now(),
+			ReleaseDTO releaseToSave = new ReleaseDTO("OCT-2023", "October 2023 Major Release", LocalDate.now(),
 					LocalDate.now().plusDays(7));
 			ReleaseDTO releaseSavedDTO = this.releaseService.save(releaseToSave);
 			logger.info("Release saved: {}", releaseSavedDTO);

@@ -1,4 +1,4 @@
-package io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests;
+package io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,7 +20,7 @@ public class ReleaseServiceTests extends AbstractTestNGSpringContextTests {
 	@Autowired
 	private ReleaseService releaseService;
 
-	private static ReleaseDTO releaseToSave = new ReleaseDTO(null, "NOV-2023", "November 2023 Major Release",
+	private static ReleaseDTO releaseToSave = new ReleaseDTO("NOV-2023", "November 2023 Major Release",
 			LocalDate.now(), LocalDate.now().plusDays(7));
 	private static Long savedReleaseId = 0L;
 
@@ -64,7 +64,7 @@ public class ReleaseServiceTests extends AbstractTestNGSpringContextTests {
 	public void deleteRelease() {
 		TestFactory.recordTest("Delete release");
 		Assertions.assertThatNoException().isThrownBy(() -> {
-			this.releaseService.delete(new ReleaseDTO(ReleaseServiceTests.savedReleaseId, null,null,null,null));
+			this.releaseService.delete(new ReleaseDTO(ReleaseServiceTests.savedReleaseId));
 		});
 	}
 }

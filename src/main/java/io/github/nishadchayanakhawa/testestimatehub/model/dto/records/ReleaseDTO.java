@@ -35,4 +35,12 @@ public class ReleaseDTO {
 	// end date
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate endDate;
+	
+	public ReleaseDTO(String identifier,String name,LocalDate startDate,LocalDate endDate) {
+		this(null,identifier,name,startDate,endDate);
+	}
+	
+	public ReleaseDTO(Long id) {
+		this(id,null,null,null,null);
+	}
 }

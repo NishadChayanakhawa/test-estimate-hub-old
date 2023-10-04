@@ -8,55 +8,61 @@
 	<test name="Unit Tests : Application Configuration" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ApplicationConfigurationServiceTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests.ApplicationConfigurationServiceTests" />
 		</classes>
 	</test>
 	<test name="Unit Tests : Test Type" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.TestTypeServiceTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests.TestTypeServiceTests" />
 		</classes>
 	</test>
 	<test name="Unit Tests : Change Type" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ChangeTypeServiceTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests.ChangeTypeServiceTests" />
 		</classes>
 	</test>
 	<test name="Unit Tests : Release" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ReleaseServiceTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests.ReleaseServiceTests" />
 		</classes>
 	</test>
 	<test name="Unit Tests : Change" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.ChangeServiceTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests.ChangeServiceTests" />
 		</classes>
 	</test>
 	<test name="Unit Tests : Requirement" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.RequirementDataTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests.RequirementDataTests" />
 		</classes>
 	</test>
 	<test name="Unit Tests : Use Case" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.UseCaseDataTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests.UseCaseDataTests" />
 		</classes>
 	</test>
 	<test name="Unit Tests : Estimation" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.EstimationDataTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests.EstimationDataTests" />
 		</classes>
 	</test>
 	<test name="Unit Tests : General Configuration" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modelTests.GeneralConfigurationServiceTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests.GeneralConfigurationServiceTests" />
+		</classes>
+	</test>
+	<test name="API Tests : Application Configuration" parallel="methods" thread-count="5">
+		<classes>
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.integrationtests.api.ApplicationConfigurationApiTests" />
 		</classes>
 	</test>
 </suite>
