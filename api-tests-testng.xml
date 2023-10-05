@@ -1,0 +1,14 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Test Estimate Hub API Tests" parallel="tests" thread-count="5">
+	<listeners>
+		<listener
+			class-name="io.nishadc.automationtestingframework.testngcustomization.ReportGenerator"></listener>
+	</listeners>
+	<test name="API Tests : Configurations" parallel="methods" thread-count="5">
+		<classes>
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.integrationtests.api.ApplicationConfigurationApiTests" />
+		</classes>
+	</test>
+</suite>

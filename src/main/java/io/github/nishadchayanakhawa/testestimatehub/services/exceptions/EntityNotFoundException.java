@@ -1,4 +1,4 @@
-package io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions;
+package io.github.nishadchayanakhawa.testestimatehub.services.exceptions;
 
 //spring libraries
 import org.springframework.http.HttpStatus;
@@ -15,5 +15,8 @@ public class EntityNotFoundException extends RuntimeException {
 	private static final long serialVersionUID = 1L;
 	public EntityNotFoundException(String message) {
 		super(message);
+	}
+	public EntityNotFoundException(String name, Long id) {
+		this(String.format("%s with id %d doesn't exist.", name,id));
 	}
 }

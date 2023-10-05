@@ -25,7 +25,7 @@ import io.github.nishadchayanakhawa.testestimatehub.repositories.configurations.
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.ApplicationConfigurationTransactionException;
 //exceptions
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.DuplicateApplicationConfigurationException;
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.EntityNotFoundException;
+import io.github.nishadchayanakhawa.testestimatehub.services.exceptions.EntityNotFoundException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 

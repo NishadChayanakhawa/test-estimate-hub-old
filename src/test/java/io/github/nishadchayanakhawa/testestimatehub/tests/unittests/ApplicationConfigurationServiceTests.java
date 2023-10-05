@@ -1,10 +1,10 @@
-package io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests;
+package io.github.nishadchayanakhawa.testestimatehub.tests.unittests;
 
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ApplicationConfigurationService;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.ApplicationConfigurationTransactionException;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.DuplicateApplicationConfigurationException;
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.EntityNotFoundException;
+import io.github.nishadchayanakhawa.testestimatehub.services.exceptions.EntityNotFoundException;
 import io.nishadc.automationtestingframework.testngcustomization.TestFactory;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ApplicationConfigurationDTO;
 import java.util.List;

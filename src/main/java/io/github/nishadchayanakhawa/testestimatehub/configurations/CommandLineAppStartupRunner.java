@@ -4,12 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ApplicationConfigurationService;
@@ -18,8 +16,10 @@ import io.github.nishadchayanakhawa.testestimatehub.services.records.ChangeServi
 import io.github.nishadchayanakhawa.testestimatehub.services.records.ReleaseService;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ChangeTypeService;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.GeneralConfigurationService;
+import io.github.nishadchayanakhawa.testestimatehub.services.configurations.UserService;
 import io.github.nishadchayanakhawa.testestimatehub.model.configurations.Complexity;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ApplicationConfigurationDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.UserDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.TestTypeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.GeneralConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ChangeDTO;
@@ -31,7 +31,16 @@ import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.UseCaseDTO
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
 	private static final Logger logger = LoggerFactory.getLogger(CommandLineAppStartupRunner.class);
-
+	
+	@Autowired
+	private DefaultValues defaults;
+	
+	private static Map<String,UserDTO> testUsers;
+	
+	public static Map<String,UserDTO> getTestUsers() {
+		return testUsers;
+	}
+	
 	@Value("${server.port}")
 	private int serverPort;
 
@@ -53,6 +62,9 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 	@Autowired
 	private ReleaseService releaseService;
 
+	@Autowired
+	private UserService userService;
+
 	@Override
 	public void run(String... args) throws Exception {
 		CommandLineAppStartupRunner.logger.info("Application started!!!");
@@ -64,6 +76,8 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 		this.loadGeneralConfiguration();
 		this.loadRelease();
 		this.loadChange();
+		this.loadUsers();
+		testUsers=this.defaults.getTestUsers();
 	}
 
 	private void loadApplicationConfiguration() {
@@ -116,7 +130,7 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 							new RequirementDTO("BN02", "Configuration", "MEDIUM")),
 					Set.of(new ApplicationConfigurationDTO(1L, null, null, null, 0, null, null),
 							new ApplicationConfigurationDTO(2L, null, null, null, 0, null, null)),
-					null,0,0,0,0,0,0,0);
+					null, 0, 0, 0, 0, 0, 0, 0);
 			ChangeDTO changeSavedDTO = this.changeService.save(changeToSave);
 
 			changeSavedDTO = this.changeService.get(changeSavedDTO.getId());
@@ -140,6 +154,15 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 					.save(new GeneralConfigurationDTO(null, testDesignProductivity, testExecutionProductivity, 10d, 20d,
 							40d, 30d));
 			logger.info("General Configuration saved: {}", savedGeneralConfiguration);
+		}
+	}
+
+	private void loadUsers() {
+		if (this.userService.getAll().isEmpty()) {
+			defaults.getDefaultUsers().stream().forEach(user -> {
+				UserDTO savedUser = this.userService.save(user);
+				logger.info("Saved User: {}", savedUser);
+			});
 		}
 	}
 }

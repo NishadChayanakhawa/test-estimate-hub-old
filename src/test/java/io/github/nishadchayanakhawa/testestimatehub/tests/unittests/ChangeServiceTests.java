@@ -1,4 +1,4 @@
-package io.github.nishadchayanakhawa.testestimatehub.unittests.modeltests;
+package io.github.nishadchayanakhawa.testestimatehub.tests.unittests;
 
 import java.time.LocalDate;
 import java.util.List;
