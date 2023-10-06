@@ -11,10 +11,14 @@
 				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.UserServiceTests" />
 		</classes>
 	</test>
-	<test name="Unit Tests : Configurations" parallel="methods" thread-count="5">
+	<test name="Unit Tests : Application Configurations" parallel="methods" thread-count="5">
 		<classes>
 			<class
 				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.ApplicationConfigurationServiceTests" />
+		</classes>
+	</test>
+	<test name="Unit Tests : Configurations" parallel="methods" thread-count="5">
+		<classes>
 			<class
 				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.TestTypeServiceTests" />
 			<class

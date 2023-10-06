@@ -1,0 +1,27 @@
+{
+	"testData": [
+		{
+			"userToAdd": {
+				"username": "john",
+				"password": "john",
+				"firstName": "Joh",
+				"lastName": "Do",
+				"email": "joh.do@company.com",
+				"roles": [
+					"TESTER",
+					"TEST_LEAD"
+				]
+			},
+			"userToModify": {
+				"username": "johnd",
+				"password": "johnd",
+				"firstName": "John",
+				"lastName": "Doe",
+				"email": "john.doe@company.com",
+				"roles": [
+					"TEST_LEAD"
+				]
+			}
+		}
+	]
+}

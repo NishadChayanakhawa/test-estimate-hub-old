@@ -3,6 +3,7 @@ package io.github.nishadchayanakhawa.testestimatehub.configurations;
 //import section
 //spring libraries
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,8 @@ public class SecurityFilterConfiguration {
 	private static final String H2_CONSOLE_CONTEXT_MATCHER = "/h2-console/**";
 
 	@Bean
-	@Order(1)
+	@Order(2)
+	@Profile("!dev")
 	SecurityFilterChain applicationSecurityFilterChain(HttpSecurity http) throws Exception {
 		return http.authorizeHttpRequests(
 				request -> request.requestMatchers(AntPathRequestMatcher.antMatcher("/api/configuration/**"))
@@ -43,7 +45,7 @@ public class SecurityFilterConfiguration {
 	 * @throws Exception
 	 */
 	@Bean
-	@Order(2)
+	@Order(1)
 	SecurityFilterChain h2ConsoleSecurityFilterChain(HttpSecurity http) throws Exception {
 		return
 		// for h2-console,

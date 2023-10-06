@@ -1,4 +1,4 @@
-package io.github.nishadchayanakhawa.testestimatehub.integrationtests.api;
+package io.github.nishadchayanakhawa.testestimatehub.tests.integrationtests.api;
 
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,8 @@ import org.springframework.web.context.WebApplicationContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
-import io.github.nishadchayanakhawa.testestimatehub.integrationtests.api.SpringMockRestApiTestHelper.RequestMethod;
+import io.github.nishadchayanakhawa.testestimatehub.tests.SpringMockRestApiTestHelper;
+import io.github.nishadchayanakhawa.testestimatehub.tests.SpringMockRestApiTestHelper.RequestMethod;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.response.ValidatableMockMvcResponse;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;

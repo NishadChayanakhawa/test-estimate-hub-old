@@ -170,8 +170,8 @@ public class UserServiceTests extends AbstractTestNGSpringContextTests {
 		// Add user
 		UserDTO userToAdd = CommandLineAppStartupRunner.getTestUsers().get("AddDuplicateUsername");
 		Assertions.assertThatThrownBy(() -> this.addUser(userToAdd)).isExactlyInstanceOf(DuplicateEntityException.class)
-				.hasMessage(String.format("%s with %s as '%s' already exists.", "User", "username",
-						userToAdd.getUsername()));
+				.hasMessage(String.format("%s '%s' already exists for another %s", "username",
+						userToAdd.getUsername(),"User"));
 	}
 
 	// add duplicate email record
@@ -181,7 +181,7 @@ public class UserServiceTests extends AbstractTestNGSpringContextTests {
 		// Add user
 		UserDTO userToAdd = CommandLineAppStartupRunner.getTestUsers().get("AddDuplicateEmail");
 		Assertions.assertThatThrownBy(() -> this.addUser(userToAdd)).isExactlyInstanceOf(DuplicateEntityException.class)
-				.hasMessage(String.format("%s with %s as '%s' already exists.", "User", "email", userToAdd.getEmail()));
+				.hasMessage(String.format("%s '%s' already exists for another %s", "email", userToAdd.getEmail(),"User"));
 	}
 
 	// add empty record

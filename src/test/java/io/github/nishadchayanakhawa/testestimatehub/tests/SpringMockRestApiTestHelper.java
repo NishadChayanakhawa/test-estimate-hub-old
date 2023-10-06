@@ -1,8 +1,14 @@
-package io.github.nishadchayanakhawa.testestimatehub.integrationtests.api;
+package io.github.nishadchayanakhawa.testestimatehub.tests;
 
 import java.util.Map;
+import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 import org.hamcrest.Matchers;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -11,11 +17,32 @@ import io.nishadc.automationtestingframework.testngcustomization.TestFactory;
 import io.restassured.module.mockmvc.RestAssuredMockMvc;
 import io.restassured.module.mockmvc.response.ValidatableMockMvcResponse;
 import io.restassured.module.mockmvc.specification.MockMvcRequestSpecification;
-
 public class SpringMockRestApiTestHelper {
 	private static Logger logger = LoggerFactory.getLogger(SpringMockRestApiTestHelper.class);
 	public enum RequestMethod {
 		GET, POST, PUT, DELETE, PATCH, OPTIONS
+	}
+	
+	public static String[] toArrayOfStrings(JSONArray jsonArray) throws JSONException {
+		List<String> stringList=new ArrayList<>();
+		for(int iJsonCounter=0;iJsonCounter<jsonArray.length();iJsonCounter++) {
+			stringList.add(jsonArray.getString(iJsonCounter));
+		}
+		return stringList.toArray(new String[stringList.size()]);
+	}
+	
+	public static Map<String,Object> toMap(JSONObject json, String ... fieldsToskip) throws JSONException {
+		Map<String,Object> map=new HashMap<>();
+		Iterator<?> jsonKeys=json.keys();
+		List<String> fieldsToSkipList=Arrays.asList(fieldsToskip);
+		while(jsonKeys.hasNext()) {
+			String key=(String)jsonKeys.next();
+			if(!(fieldsToSkipList.contains(key))) {
+				Object value=json.get(key);
+				map.put(key, value);
+			}
+		}
+		return map;
 	}
 
 	private SpringMockRestApiTestHelper() {
@@ -87,6 +114,7 @@ public class SpringMockRestApiTestHelper {
 	}
 	
 	private static ValidatableMockMvcResponse submitRequest(MockMvcRequestSpecification request,String url,RequestMethod requestMethod) {
+		TestFactory.recordTestStep(String.format("Submitting '%s' request to '%s'", requestMethod.toString(),url));
 		//call restassured method based on request method type
 		switch(requestMethod) {
 		case DELETE:

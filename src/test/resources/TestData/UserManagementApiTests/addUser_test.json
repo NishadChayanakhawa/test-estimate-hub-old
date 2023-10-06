@@ -1,0 +1,14 @@
+{
+	"testData" : [
+		{
+			"username" : "jane",
+			"password" : "janed",
+			"firstName" : "Jane",
+			"lastName" : "Doe",
+			"email" : "jane.doe@company.com",
+			"roles" : [
+				"TESTER","TEST_LEAD"
+			]
+		}
+	]
+}

@@ -10,13 +10,15 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  * @author nishad.chayanakhawa
  */
 
-@ResponseStatus(value = HttpStatus.NOT_FOUND,reason="Requested entity doesn't exist.")
-public class EntityNotFoundException extends RuntimeException {
+@ResponseStatus(value = HttpStatus.GONE,reason="Requested entity doesn't exist.")
+public class EntityNotFoundException extends TestEstimateHubExceptions {
 	private static final long serialVersionUID = 1L;
 	public EntityNotFoundException(String message) {
 		super(message);
 	}
 	public EntityNotFoundException(String name, Long id) {
-		this(String.format("%s with id %d doesn't exist.", name,id));
-	}
+		super(String.format("%s with id %d doesn't exist.", name,id));
+		status=HttpStatus.GONE;
+		reason="Requested entity doesn't exist";
+	}	
 }

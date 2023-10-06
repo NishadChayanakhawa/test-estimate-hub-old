@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
  */
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST,reason="Request data is incorrect.")
-public class TransactionException extends RuntimeException {
+public class TransactionException extends TestEstimateHubExceptions {
 	private static final long serialVersionUID = 1L;
+
 	public TransactionException(String message) {
 		super(message);
+		status=HttpStatus.BAD_REQUEST;
+		reason="Request data is incorrect";
 	}
 }

@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class BeanCollection {
-
 	/**
 	 * <b>Method Name</b>: modelMapper<br>
 	 * <b>Description</b>: Model Mapper bean configuration.<br>
