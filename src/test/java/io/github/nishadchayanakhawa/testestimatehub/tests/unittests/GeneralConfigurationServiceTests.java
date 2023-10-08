@@ -7,9 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
-import io.github.nishadchayanakhawa.testestimatehub.model.configurations.Complexity;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.GeneralConfigurationDTO;
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.GeneralConfigurationService;
+import io.github.nishadchayanakhawa.testestimatehub.model.Complexity;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.GeneralConfigurationDTO;
+import io.github.nishadchayanakhawa.testestimatehub.services.GeneralConfigurationService;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.GeneralConfigurationTransactionException;
 import io.nishadc.automationtestingframework.testngcustomization.TestFactory;
 

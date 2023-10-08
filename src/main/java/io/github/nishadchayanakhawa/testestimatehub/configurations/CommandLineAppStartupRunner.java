@@ -10,23 +10,24 @@ import java.util.Map;
 import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ApplicationConfigurationService;
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.TestTypeService;
-import io.github.nishadchayanakhawa.testestimatehub.services.records.ChangeService;
-import io.github.nishadchayanakhawa.testestimatehub.services.records.ReleaseService;
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ChangeTypeService;
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.GeneralConfigurationService;
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.UserService;
-import io.github.nishadchayanakhawa.testestimatehub.model.configurations.Complexity;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ApplicationConfigurationDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.UserDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.TestTypeDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.GeneralConfigurationDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ChangeDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ReleaseDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.RequirementDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ChangeTypeDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.UseCaseDTO;
+
+import io.github.nishadchayanakhawa.testestimatehub.services.ApplicationConfigurationService;
+import io.github.nishadchayanakhawa.testestimatehub.services.ChangeService;
+import io.github.nishadchayanakhawa.testestimatehub.services.ChangeTypeService;
+import io.github.nishadchayanakhawa.testestimatehub.services.GeneralConfigurationService;
+import io.github.nishadchayanakhawa.testestimatehub.services.ReleaseService;
+import io.github.nishadchayanakhawa.testestimatehub.services.TestTypeService;
+import io.github.nishadchayanakhawa.testestimatehub.services.UserService;
+import io.github.nishadchayanakhawa.testestimatehub.model.Complexity;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ApplicationConfigurationDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeTypeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.GeneralConfigurationDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ReleaseDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.RequirementDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.TestTypeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.UseCaseDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.UserDTO;
 
 @Component
 public class CommandLineAppStartupRunner implements CommandLineRunner {
@@ -34,12 +35,6 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 	
 	@Autowired
 	private DefaultValues defaults;
-	
-	private static Map<String,UserDTO> testUsers;
-	
-	public static Map<String,UserDTO> getTestUsers() {
-		return testUsers;
-	}
 	
 	@Value("${server.port}")
 	private int serverPort;
@@ -77,7 +72,6 @@ public class CommandLineAppStartupRunner implements CommandLineRunner {
 		this.loadRelease();
 		this.loadChange();
 		this.loadUsers();
-		testUsers=this.defaults.getTestUsers();
 	}
 
 	private void loadApplicationConfiguration() {

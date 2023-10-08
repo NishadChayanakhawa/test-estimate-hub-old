@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
-import io.github.nishadchayanakhawa.testestimatehub.model.configurations.Role;
+import io.github.nishadchayanakhawa.testestimatehub.model.Role;
 
 //spring-security libraries
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

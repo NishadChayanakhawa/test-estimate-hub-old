@@ -9,11 +9,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
-import io.github.nishadchayanakhawa.testestimatehub.services.records.ReleaseService;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ReleaseDTO;
+import io.github.nishadchayanakhawa.testestimatehub.services.ReleaseService;
 import io.github.nishadchayanakhawa.testestimatehub.services.records.exceptions.DuplicateReleaseException;
 import io.nishadc.automationtestingframework.testngcustomization.TestFactory;
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ReleaseDTO;
 
 @SpringBootTest(classes = TestEstimateHubApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class ReleaseServiceTests extends AbstractTestNGSpringContextTests {

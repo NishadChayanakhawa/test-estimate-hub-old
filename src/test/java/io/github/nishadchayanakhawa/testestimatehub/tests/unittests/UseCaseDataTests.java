@@ -9,14 +9,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-import io.github.nishadchayanakhawa.testestimatehub.services.records.ChangeService;
-import io.github.nishadchayanakhawa.testestimatehub.services.records.ReleaseService;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ApplicationConfigurationDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.TestTypeDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ChangeDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.ReleaseDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.RequirementDTO;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.records.UseCaseDTO;
+
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ApplicationConfigurationDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ReleaseDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.RequirementDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.TestTypeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.UseCaseDTO;
+import io.github.nishadchayanakhawa.testestimatehub.services.ChangeService;
+import io.github.nishadchayanakhawa.testestimatehub.services.ReleaseService;
 import io.nishadc.automationtestingframework.testngcustomization.TestFactory;
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
 

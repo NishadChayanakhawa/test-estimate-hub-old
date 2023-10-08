@@ -11,10 +11,10 @@
 				name="io.github.nishadchayanakhawa.testestimatehub.tests.integrationtests.api.ApplicationConfigurationApiTests" />
 		</classes>
 	</test>
-	<test name="API Tests : User Configurations" parallel="methods" thread-count="5">
+	<test name="API Tests : User Management" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.tests.integrationtests.api.UserManagementApiTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.integrationtests.api.UserManagementTests" />
 		</classes>
 	</test>
 </suite>

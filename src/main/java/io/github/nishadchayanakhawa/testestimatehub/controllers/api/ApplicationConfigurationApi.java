@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ApplicationConfigurationDTO;
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ApplicationConfigurationService;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ApplicationConfigurationDTO;
+import io.github.nishadchayanakhawa.testestimatehub.services.ApplicationConfigurationService;
 
 @RestController
 @RequestMapping("/api/configuration/application")

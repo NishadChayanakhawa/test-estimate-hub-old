@@ -8,12 +8,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.ChangeTypeService;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.ChangeTypeDTO;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.DuplicateChangeTypeException;
+import io.github.nishadchayanakhawa.testestimatehub.services.ChangeTypeService;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.ChangeTypeTransactionException;
 import io.nishadc.automationtestingframework.testngcustomization.TestFactory;
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.ChangeTypeDTO;
 
 @SpringBootTest(classes = TestEstimateHubApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class ChangeTypeServiceTests extends AbstractTestNGSpringContextTests {

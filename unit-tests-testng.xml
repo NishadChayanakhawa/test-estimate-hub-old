@@ -5,10 +5,10 @@
 		<listener
 			class-name="io.nishadc.automationtestingframework.testngcustomization.ReportGenerator"></listener>
 	</listeners>
-	<test name="Unit Tests : User Configurations" parallel="methods" thread-count="5">
+	<test name="Unit Tests : User Management" parallel="methods" thread-count="5">
 		<classes>
 			<class
-				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.UserServiceTests" />
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.UserManagementTests" />
 		</classes>
 	</test>
 	<test name="Unit Tests : Application Configurations" parallel="methods" thread-count="5">

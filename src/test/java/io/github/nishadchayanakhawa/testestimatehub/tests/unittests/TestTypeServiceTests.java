@@ -8,12 +8,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
 
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.TestTypeService;
-import io.github.nishadchayanakhawa.testestimatehub.model.dto.configurations.TestTypeDTO;
+import io.github.nishadchayanakhawa.testestimatehub.services.TestTypeService;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.DuplicateTestTypeException;
 import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.TestTypeTransactionException;
 import io.nishadc.automationtestingframework.testngcustomization.TestFactory;
 import io.github.nishadchayanakhawa.testestimatehub.TestEstimateHubApplication;
+import io.github.nishadchayanakhawa.testestimatehub.model.dto.TestTypeDTO;
 
 @SpringBootTest(classes = TestEstimateHubApplication.class, webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 public class TestTypeServiceTests extends AbstractTestNGSpringContextTests {

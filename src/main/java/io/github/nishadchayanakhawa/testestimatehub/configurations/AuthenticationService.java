@@ -6,19 +6,19 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import io.github.nishadchayanakhawa.testestimatehub.model.configurations.User;
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.UserService;
+import io.github.nishadchayanakhawa.testestimatehub.model.User;
+import io.github.nishadchayanakhawa.testestimatehub.repositories.UserRepository;
 
 @Service
 public class AuthenticationService implements UserDetailsService {
-	
+
 	@Autowired
-	private UserService userService;
-	
+	private UserRepository userRepository;
+
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		User user=this.userService.loadUserByUsername(username);
-		if(user==null) {
+		User user = this.userRepository.findByUsername(username);
+		if (user == null) {
 			throw new UsernameNotFoundException(username);
 		} else {
 			return user;
