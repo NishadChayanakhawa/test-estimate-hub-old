@@ -3,8 +3,8 @@ package io.github.nishadchayanakhawa.testestimatehub.services.exceptions;
 import org.springframework.http.HttpStatus;
 
 public class TestEstimateHubExceptions extends RuntimeException {
-	private static HttpStatus status;
-	private static String reason;
+	private HttpStatus status;
+	private String reason;
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -19,18 +19,18 @@ public class TestEstimateHubExceptions extends RuntimeException {
 	}
 	
 	public int getStatus() {
-		return TestEstimateHubExceptions.status.value();
+		return this.status.value();
 	}
 	
 	public String getError() {
-		return TestEstimateHubExceptions.status.getReasonPhrase();
+		return this.status.getReasonPhrase();
 	}
 	
 	public String getReason() {
-		return TestEstimateHubExceptions.reason;
+		return this.reason;
 	}
 	
 	public HttpStatus getHttpStatus() {
-		return TestEstimateHubExceptions.status;
+		return this.status;
 	}
 }
