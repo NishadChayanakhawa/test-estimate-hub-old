@@ -16,10 +16,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class EntityNotFoundException extends TestEstimateHubExceptions {
 	private static final long serialVersionUID = 1L;
 
-	public EntityNotFoundException(String message) {
-		super(message);
-	}
-
 	public EntityNotFoundException(String name, Long id) {
 		super(String.format("%s with id %d doesn't exist.", name, id), HttpStatus.GONE,
 				"Requested entity doesn't exist");

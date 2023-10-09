@@ -98,7 +98,7 @@ public class ApplicationConfigurationService {
 		ApplicationConfigurationDTO applicationConfiguration = modelMapper.map(
 				this.applicationConfigurationRepository.findById(id)
 						.orElseThrow(() -> new EntityNotFoundException(
-								String.format("Application configuration entity for id %d doesn't exist.", id))),
+								"Application Configuration", id)),
 				ApplicationConfigurationDTO.class);
 		logger.debug("Application configuration found: {}", applicationConfiguration);
 		return applicationConfiguration;
