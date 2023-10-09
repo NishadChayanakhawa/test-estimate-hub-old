@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 /**
  * <b>Class Name</b>: EntityNotFoundException<br>
  * <b>Description</b>: Thrown in case entity is not found in db. Associated with
- * status code 404<br>
+ * status code 410<br>
  * 
  * @author nishad.chayanakhawa
  */

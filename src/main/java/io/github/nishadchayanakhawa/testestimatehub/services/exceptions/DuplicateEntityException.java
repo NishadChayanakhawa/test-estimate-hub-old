@@ -3,6 +3,13 @@ package io.github.nishadchayanakhawa.testestimatehub.services.exceptions;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * <b>Class Name</b>: DuplicateEntityException<br>
+ * <b>Description</b>: Thrown when unique constraint is violated for an entity.
+ * Associated with status code 409.<br>
+ * 
+ * @author nishad.chayanakhawa
+ */
 @ResponseStatus(value = HttpStatus.CONFLICT, reason = "Entity with unique values already exists.")
 public class DuplicateEntityException extends TestEstimateHubExceptions {
 	/**
