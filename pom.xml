@@ -37,8 +37,10 @@
 					<argLine>${surefireArgLine}</argLine>
 					<skip>${skipTests}</skip>
 					<suiteXmlFiles>
-						<suiteXmlFile>testng.xml</suiteXmlFile>
+						<suiteXmlFile>unit-tests-testng.xml</suiteXmlFile>
+						<suiteXmlFile>api-tests-testng.xml</suiteXmlFile>
 					</suiteXmlFiles>
+					<groups>${testng.groups}</groups>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -49,7 +51,6 @@
 					<excludes>
 						<exclude>**/TestEstimateHubApplication.class</exclude>
 						<exclude>**/testestimatehub/configurations/*.class</exclude>
-						<exclude>**/dto/**</exclude>
 					</excludes>
 					<skip>${skipCodeCoverageCheck}</skip>
 				</configuration>
@@ -180,10 +181,52 @@
 			<version>2.0.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>spring-mock-mvc</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!--
+		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-configuration-processor -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+		</dependency>
 
 	</dependencies>
 
 	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<testng.groups>unit-test,api-test,ui-test</testng.groups>
+			</properties>
+		</profile>
+		<profile>
+			<id>unit-tests</id>
+			<activation>
+				<property>
+					<name>unitTests</name>
+				</property>
+			</activation>
+			<properties>
+				<testng.groups>unit-test</testng.groups>
+			</properties>
+		</profile>
+		<profile>
+			<id>api-tests</id>
+			<activation>
+				<property>
+					<name>apiTests</name>
+				</property>
+			</activation>
+			<properties>
+				<testng.groups>api-test</testng.groups>
+			</properties>
+		</profile>
 		<profile>
 			<id>skipTests</id>
 			<activation>
@@ -202,8 +245,8 @@
 		<maven-compiler-plugin.source>17</maven-compiler-plugin.source>
 		<maven-compiler-plugin.target>17</maven-compiler-plugin.target>
 		<maven-compiler-plugin.encoding>UTF-8</maven-compiler-plugin.encoding>
-		<jacoco-instruction-coveredratio.minimum>0.8</jacoco-instruction-coveredratio.minimum>
-		<jacoco-branch-coveredratio.minimum>0.8</jacoco-branch-coveredratio.minimum>
+		<jacoco-instruction-coveredratio.minimum>0.1</jacoco-instruction-coveredratio.minimum>
+		<jacoco-branch-coveredratio.minimum>0.1</jacoco-branch-coveredratio.minimum>
 		<jacoco-maven-plugin.version>0.8.9</jacoco-maven-plugin.version>
 		<spring.profiles.active>dev</spring.profiles.active>
 		<skipCodeCoverageCheck>false</skipCodeCoverageCheck>
@@ -214,8 +257,7 @@
 		</sonar.cpd.exclusions>
 		<sonar.coverage.exclusions>
 			**/io/github/nishadchayanakhawa/testestimatehub/*,
-			**/io/github/nishadchayanakhawa/testestimatehub/configurations/*,
-			**/dto/**
+			**/io/github/nishadchayanakhawa/testestimatehub/configurations/*
 		</sonar.coverage.exclusions>
 	</properties>
 

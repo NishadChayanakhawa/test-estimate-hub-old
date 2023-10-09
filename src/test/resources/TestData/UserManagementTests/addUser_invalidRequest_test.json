@@ -1,0 +1,57 @@
+{
+	"testData": [
+		{
+			"userToAdd": {
+				"username": "jack",
+				"password": "jackn",
+				"firstName": "Jack",
+				"lastName": "Nelson",
+				"email": "jack.nelson@company.com",
+				"roles": [
+					"ADMIN",
+					"TEST_LEAD"
+				]
+			},
+			"duplicateUsernameToAdd": {
+				"username": "jack",
+				"password": "jacks",
+				"firstName": "Jack",
+				"lastName": "Stark",
+				"email": "jack.stark@company.com",
+				"roles": [
+					"TESTER"
+				]
+			},
+			"expectedErrors_duplicateUsername": [
+				"username 'jack' already exists for another User"
+			],
+			"duplicateEmailToAdd": {
+				"username": "jacks",
+				"password": "jacks",
+				"firstName": "Jack",
+				"lastName": "Stark",
+				"email": "jack.nelson@company.com",
+				"roles": [
+					"TESTER"
+				]
+			},
+			"expectedErrors_duplicateEmail": [
+				"email 'jack.nelson@company.com' already exists for another User"
+			],
+			"invalidUserToAdd": {
+				"username": "",
+				"password": "jacks",
+				"firstName": null,
+				"email": "jack.nelson@company.com",
+				"roles": [
+					"TESTER"
+				]
+			},
+			"expectedErrors_invalidRequest": [
+				"lastName cannot be blank",
+				"username cannot be blank",
+				"firstName cannot be blank"
+			]
+		}
+	]
+}

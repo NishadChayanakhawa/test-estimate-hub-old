@@ -1,0 +1,50 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+
+<suite name="Test Estimate Hub Unit Tests" parallel="tests" thread-count="5">
+	<listeners>
+		<listener
+			class-name="io.nishadc.automationtestingframework.testngcustomization.ReportGenerator"></listener>
+	</listeners>
+	<test name="Unit Tests : User Management" parallel="methods" thread-count="5">
+		<classes>
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.UserManagementTests" />
+		</classes>
+	</test>
+	<test name="Unit Tests : Application Configurations" parallel="methods" thread-count="5">
+		<classes>
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.ApplicationConfigurationServiceTests" />
+		</classes>
+	</test>
+	<test name="Unit Tests : Configurations" parallel="methods" thread-count="5">
+		<classes>
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.TestTypeServiceTests" />
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.ChangeTypeServiceTests" />
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.GeneralConfigurationServiceTests" />
+		</classes>
+	</test>
+	<test name="Unit Tests : Release and Change Records" parallel="methods"
+		thread-count="5">
+		<classes>
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.ReleaseServiceTests" />
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.ChangeServiceTests" />
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.RequirementDataTests" />
+		</classes>
+	</test>
+	<test name="Unit Tests : Use cases and estimations" parallel="methods"
+		thread-count="5">
+		<classes>
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.UseCaseDataTests" />
+			<class
+				name="io.github.nishadchayanakhawa.testestimatehub.tests.unittests.EstimationDataTests" />
+		</classes>
+	</test>
+</suite>
