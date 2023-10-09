@@ -6,19 +6,22 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * <b>Class Name</b>: EntityNotFoundException<br>
- * <b>Description</b>: Thrown in case entity is not found in db. Associated with status code 404<br>
+ * <b>Description</b>: Thrown in case entity is not found in db. Associated with
+ * status code 404<br>
+ * 
  * @author nishad.chayanakhawa
  */
 
-@ResponseStatus(value = HttpStatus.GONE,reason="Requested entity doesn't exist.")
+@ResponseStatus(value = HttpStatus.GONE, reason = "Requested entity doesn't exist.")
 public class EntityNotFoundException extends TestEstimateHubExceptions {
 	private static final long serialVersionUID = 1L;
+
 	public EntityNotFoundException(String message) {
 		super(message);
 	}
+
 	public EntityNotFoundException(String name, Long id) {
-		super(String.format("%s with id %d doesn't exist.", name,id));
-		status=HttpStatus.GONE;
-		reason="Requested entity doesn't exist";
-	}	
+		super(String.format("%s with id %d doesn't exist.", name, id), HttpStatus.GONE,
+				"Requested entity doesn't exist");
+	}
 }

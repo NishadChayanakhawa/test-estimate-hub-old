@@ -100,7 +100,7 @@ public class UserService {
 			jakarta.validation.ConstraintViolationException re = (jakarta.validation.ConstraintViolationException) e
 					.getRootCause();
 			Set<ConstraintViolation<?>> violations = re.getConstraintViolations();
-			// join individual messages by ;
+			// join individual messages by
 			String messages = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(";"));
 			// throw TransactionException
 			throw (TransactionException) new TransactionException(messages).initCause(e);

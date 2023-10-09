@@ -47,7 +47,9 @@ public class UserManagementTests extends AbstractTestNGSpringContextTests {
 	}
 
 	private void deleteUser(Long id) {
-		this.userService.delete(new UserDTO(id));
+		UserDTO userToDelete=new UserDTO();
+		userToDelete.setId(id);
+		this.userService.delete(userToDelete);
 	}
 
 	@Test(dataProvider = "getTestDataFromJson", dataProviderClass = TestDataProvider.class, groups = { "unit-test" })
@@ -83,7 +85,8 @@ public class UserManagementTests extends AbstractTestNGSpringContextTests {
 		this.deleteUser(addedUser.getId());
 
 		// get deleted user
-		Assertions.assertThatThrownBy(() -> this.userService.get(addedUser.getId()))
+		Long addedUserId=addedUser.getId();
+		Assertions.assertThatThrownBy(() -> this.userService.get(addedUserId))
 				.isExactlyInstanceOf(EntityNotFoundException.class)
 				.hasMessage(String.format("%s with id %d doesn't exist.", "User", addedUser.getId()));
 	}

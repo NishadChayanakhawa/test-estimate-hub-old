@@ -1,9 +1,8 @@
 package io.github.nishadchayanakhawa.testestimatehub.model.dto;
 
 //import section
-//java utils;
+//java utils
 import java.util.Set;
-
 import io.github.nishadchayanakhawa.testestimatehub.model.Role;
 //lombok
 import lombok.AllArgsConstructor;
@@ -37,12 +36,4 @@ public class UserDTO {
 	private String email;
 	//roles
 	private Set<Role> roles;
-	
-	/**
-	 * Constructor to initialize UserDTO with only id
-	 * @param id as {@link java.lang.Long Long}
-	 */
-	public UserDTO(Long id) {
-		this(id, null, null, null, null, null, null);
-	}
 }
