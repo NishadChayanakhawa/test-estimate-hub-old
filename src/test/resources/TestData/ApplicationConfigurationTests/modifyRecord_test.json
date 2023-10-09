@@ -1,0 +1,20 @@
+{
+	"testData": [
+		{
+			"originalApplicationConfigurationToAdd": {
+				"application": "TEH",
+				"module": "Configuration",
+				"subModule": "Test Type Configuration",
+				"baseTestScriptCount": 4,
+				"complexityCode": "VERY_LOW"
+			},
+			"modifiedApplicationConfigurationToAdd": {
+				"application": "TEH",
+				"module": "Configuration",
+				"subModule": "Change Type Configuration",
+				"baseTestScriptCount": 5,
+				"complexityCode": "VERY_HIGH"
+			}
+		}
+	]
+}

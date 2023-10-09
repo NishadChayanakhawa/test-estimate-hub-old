@@ -107,7 +107,7 @@ public class UserManagementApi {
 	@DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<String> deleteUser(@RequestBody UserDTO userToDelete) {
 		// delete user
-		this.userService.delete(userToDelete);
+		this.userService.delete(userToDelete.getId());
 		// send status code 200
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

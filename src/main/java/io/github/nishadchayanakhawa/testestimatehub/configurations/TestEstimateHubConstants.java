@@ -4,6 +4,8 @@ public class TestEstimateHubConstants {
 	private TestEstimateHubConstants() {
 		
 	}
+	private static final String CONFIGURATION_API="/api/configuration";
 	
-	public static final String USER_MANAGEMENT_API="/api/configuration/user";
+	public static final String USER_MANAGEMENT_API=CONFIGURATION_API + "/user";
+	public static final String APPLICATION_CONFIGURATION_API= CONFIGURATION_API + "/application";
 }

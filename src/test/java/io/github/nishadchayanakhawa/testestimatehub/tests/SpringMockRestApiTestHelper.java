@@ -31,6 +31,10 @@ public class SpringMockRestApiTestHelper {
 		return stringList.toArray(new String[stringList.size()]);
 	}
 	
+	public static Map<String,Object> toMap(JSONObject json) throws JSONException {
+		return SpringMockRestApiTestHelper.toMap(json,"");
+	}
+	
 	public static Map<String,Object> toMap(JSONObject json, String ... fieldsToskip) throws JSONException {
 		Map<String,Object> map=new HashMap<>();
 		Iterator<?> jsonKeys=json.keys();

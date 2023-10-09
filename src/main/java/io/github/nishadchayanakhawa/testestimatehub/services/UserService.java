@@ -3,8 +3,6 @@ package io.github.nishadchayanakhawa.testestimatehub.services;
 //import section
 //java utils
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 //model mapper
 import org.modelmapper.ModelMapper;
 //logger
@@ -26,7 +24,6 @@ import io.github.nishadchayanakhawa.testestimatehub.services.exceptions.Duplicat
 import io.github.nishadchayanakhawa.testestimatehub.services.exceptions.EntityNotFoundException;
 import io.github.nishadchayanakhawa.testestimatehub.services.exceptions.TransactionException;
 //jpa exceptions
-import jakarta.validation.ConstraintViolation;
 import org.hibernate.exception.ConstraintViolationException;
 
 /**
@@ -95,15 +92,7 @@ public class UserService {
 						.initCause(e);
 			}
 		} catch (TransactionSystemException e) {
-			// in case constraints other than unique are violated,
-			// get violation messages
-			jakarta.validation.ConstraintViolationException re = (jakarta.validation.ConstraintViolationException) e
-					.getRootCause();
-			Set<ConstraintViolation<?>> violations = re.getConstraintViolations();
-			// join individual messages by
-			String messages = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(";"));
-			// throw TransactionException
-			throw (TransactionException) new TransactionException(messages).initCause(e);
+			throw (TransactionException) new TransactionException(e).initCause(e);
 		}
 	}
 
@@ -150,16 +139,13 @@ public class UserService {
 
 	/**
 	 * <b>Method Name</b>: delete<br>
-	 * <b>Description</b>: Delete user record. Only id is required and other fields
-	 * can be null<br>
+	 * <b>Description</b>: Delete user record.<br>
 	 * 
-	 * @param userToDelete as
-	 *                     {@link io.github.nishadchayanakhawa.testestimatehub.model.dto.UserDTO
-	 *                     UserDTO}
+	 * @param id as {@link java.lang.Long Long}
 	 */
-	public void delete(UserDTO userToDelete) {
-		logger.debug("Deleting User with id {}", userToDelete.getId());
+	public void delete(Long id) {
+		logger.debug("Deleting User with id {}", id);
 		// delete user
-		this.userRepository.deleteById(userToDelete.getId());
+		this.userRepository.deleteById(id);
 	}
 }
