@@ -10,4 +10,5 @@ public class TestEstimateHubConstants {
 	public static final String APPLICATION_CONFIGURATION_API= CONFIGURATION_API + "/application";
 	
 	public static final String SERVING_REQUEST_DEBUG_MESSAGE="Serving {} request for {}";
+	public static final String SERVING_GET_REQUEST_DEBUG_MESSAGE="Serving {} request for {}/{}";
 }

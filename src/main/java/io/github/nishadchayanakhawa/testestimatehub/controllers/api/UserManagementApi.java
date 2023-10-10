@@ -77,8 +77,8 @@ public class UserManagementApi {
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
 		// search for user and return the same with status code 200
-		logger.debug(TestEstimateHubConstants.SERVING_REQUEST_DEBUG_MESSAGE, "GET",
-				TestEstimateHubConstants.USER_MANAGEMENT_API + "/" + id);
+		logger.debug(TestEstimateHubConstants.SERVING_GET_REQUEST_DEBUG_MESSAGE, "GET",
+				TestEstimateHubConstants.USER_MANAGEMENT_API, id);
 		return new ResponseEntity<>(this.userService.get(id), HttpStatus.OK);
 	}
 

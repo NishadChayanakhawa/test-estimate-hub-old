@@ -74,8 +74,8 @@ public class ApplicationConfigurationApi {
 	 */
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<ApplicationConfigurationDTO> get(@PathVariable Long id) {
-		ApplicationConfigurationApi.logger.debug(TestEstimateHubConstants.SERVING_REQUEST_DEBUG_MESSAGE, "GET",
-				TestEstimateHubConstants.APPLICATION_CONFIGURATION_API + "/" + id);
+		ApplicationConfigurationApi.logger.debug(TestEstimateHubConstants.SERVING_GET_REQUEST_DEBUG_MESSAGE, "GET",
+				TestEstimateHubConstants.APPLICATION_CONFIGURATION_API, id);
 		// retrieve record and return the same
 		return new ResponseEntity<>(this.applicationConfigurationService.get(id), HttpStatus.OK);
 	}
