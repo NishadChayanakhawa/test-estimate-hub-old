@@ -33,7 +33,7 @@ import io.github.nishadchayanakhawa.testestimatehub.services.ApplicationConfigur
 @RequestMapping(TestEstimateHubConstants.APPLICATION_CONFIGURATION_API)
 public class ApplicationConfigurationApi {
 	// logger
-	private static final Logger logger = LoggerFactory.getLogger(UserManagementApi.class);
+	private static final Logger logger = LoggerFactory.getLogger(ApplicationConfigurationApi.class);
 
 	// application configuration service
 	@Autowired
@@ -54,7 +54,7 @@ public class ApplicationConfigurationApi {
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<ApplicationConfigurationDTO> save(
 			@RequestBody ApplicationConfigurationDTO applicationConfiguration) {
-		ApplicationConfigurationApi.logger.debug("Serving {} request for {}", "PUT",
+		ApplicationConfigurationApi.logger.debug(TestEstimateHubConstants.SERVING_REQUEST_DEBUG_MESSAGE, "PUT",
 				TestEstimateHubConstants.APPLICATION_CONFIGURATION_API);
 		// set status to 201 if id is null as record will be created
 		// otherwise, status is set to 200
@@ -74,8 +74,8 @@ public class ApplicationConfigurationApi {
 	 */
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<ApplicationConfigurationDTO> get(@PathVariable Long id) {
-		ApplicationConfigurationApi.logger.debug("Serving {} request for {}{}", "GET",
-				TestEstimateHubConstants.APPLICATION_CONFIGURATION_API, "/{id}");
+		ApplicationConfigurationApi.logger.debug(TestEstimateHubConstants.SERVING_REQUEST_DEBUG_MESSAGE, "GET",
+				TestEstimateHubConstants.APPLICATION_CONFIGURATION_API + "/" + id);
 		// retrieve record and return the same
 		return new ResponseEntity<>(this.applicationConfigurationService.get(id), HttpStatus.OK);
 	}
@@ -90,21 +90,22 @@ public class ApplicationConfigurationApi {
 	 */
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<List<ApplicationConfigurationDTO>> getAll() {
-		ApplicationConfigurationApi.logger.debug("Serving {} request for {}", "GET",
+		ApplicationConfigurationApi.logger.debug(TestEstimateHubConstants.SERVING_REQUEST_DEBUG_MESSAGE, "GET",
 				TestEstimateHubConstants.APPLICATION_CONFIGURATION_API);
-		//return list of saved application configuration records.
+		// return list of saved application configuration records.
 		return new ResponseEntity<>(this.applicationConfigurationService.getAll(), HttpStatus.OK);
 	}
 
 	/**
 	 * <b>Method Name</b>: delete<br>
 	 * <b>Description</b>: Delete application configuration record.<br>
+	 * 
 	 * @param applicationConfiguration
 	 * @return
 	 */
 	@DeleteMapping
 	ResponseEntity<String> delete(@RequestBody ApplicationConfigurationDTO applicationConfiguration) {
-		ApplicationConfigurationApi.logger.debug("Serving {} request for {}", "DELETE",
+		ApplicationConfigurationApi.logger.debug(TestEstimateHubConstants.SERVING_REQUEST_DEBUG_MESSAGE, "DELETE",
 				TestEstimateHubConstants.APPLICATION_CONFIGURATION_API);
 		this.applicationConfigurationService.delete(applicationConfiguration.getId());
 		return new ResponseEntity<>(HttpStatus.OK);

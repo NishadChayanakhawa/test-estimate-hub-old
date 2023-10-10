@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.transaction.TransactionSystemException;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import jakarta.validation.ConstraintViolationException;
+import lombok.NonNull;
 import jakarta.validation.ConstraintViolation;
 
 /**
@@ -33,6 +34,7 @@ public class TransactionException extends TestEstimateHubExceptions {
 	private static String extractMessages(TransactionSystemException e) {
 		// in case constraints other than unique are violated,
 		// get violation messages
+		@NonNull
 		ConstraintViolationException re = (ConstraintViolationException) e.getRootCause();
 		Set<ConstraintViolation<?>> violations = re.getConstraintViolations();
 		// join individual messages by
