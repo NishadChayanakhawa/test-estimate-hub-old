@@ -7,7 +7,7 @@
 	<version>1.0.0</version>
 	<name>Test Estimate Hub</name>
 
-	<!-- Spring Boot Parent -->
+	<!-- Spring Boot Parent Module -->
 	<parent>
 		<!--
 		https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-parent -->
