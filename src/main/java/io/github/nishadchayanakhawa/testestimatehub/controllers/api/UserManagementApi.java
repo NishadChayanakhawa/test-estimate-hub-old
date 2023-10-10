@@ -52,7 +52,8 @@ public class UserManagementApi {
 	 */
 	@PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<UserDTO> addUser(@RequestBody UserDTO userToAdd) {
-		logger.debug("Serving {} request for {}", "GET", TestEstimateHubConstants.USER_MANAGEMENT_API);
+		logger.debug(TestEstimateHubConstants.SERVING_REQUEST_DEBUG_MESSAGE, "PUT",
+				TestEstimateHubConstants.USER_MANAGEMENT_API);
 		// if user id is null, user will be added, hence status is set to 201
 		// else, status is 200
 		HttpStatus status = userToAdd.getId() == null ? HttpStatus.CREATED : HttpStatus.OK;
@@ -76,6 +77,8 @@ public class UserManagementApi {
 	@GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<UserDTO> getUser(@PathVariable Long id) {
 		// search for user and return the same with status code 200
+		logger.debug(TestEstimateHubConstants.SERVING_GET_REQUEST_DEBUG_MESSAGE, "GET",
+				TestEstimateHubConstants.USER_MANAGEMENT_API, id);
 		return new ResponseEntity<>(this.userService.get(id), HttpStatus.OK);
 	}
 
@@ -91,6 +94,8 @@ public class UserManagementApi {
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<List<UserDTO>> getAll() {
 		// return all users
+		logger.debug(TestEstimateHubConstants.SERVING_REQUEST_DEBUG_MESSAGE, "GET",
+				TestEstimateHubConstants.USER_MANAGEMENT_API);
 		return new ResponseEntity<>(this.userService.getAll(), HttpStatus.OK);
 	}
 
@@ -106,8 +111,10 @@ public class UserManagementApi {
 	 */
 	@DeleteMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
 	ResponseEntity<String> deleteUser(@RequestBody UserDTO userToDelete) {
+		logger.debug(TestEstimateHubConstants.SERVING_REQUEST_DEBUG_MESSAGE, "DELETE",
+				TestEstimateHubConstants.USER_MANAGEMENT_API);
 		// delete user
-		this.userService.delete(userToDelete);
+		this.userService.delete(userToDelete.getId());
 		// send status code 200
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

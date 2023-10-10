@@ -4,11 +4,8 @@ package io.github.nishadchayanakhawa.testestimatehub.services;
 //logger
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
-
-import java.util.List;
 //java utils
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 //model mapper
 import org.modelmapper.ModelMapper;
 //spring libraries
@@ -21,12 +18,10 @@ import org.springframework.dao.DataIntegrityViolationException;
 import io.github.nishadchayanakhawa.testestimatehub.model.ApplicationConfiguration;
 import io.github.nishadchayanakhawa.testestimatehub.model.dto.ApplicationConfigurationDTO;
 import io.github.nishadchayanakhawa.testestimatehub.repositories.ApplicationConfigurationRepository;
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.ApplicationConfigurationTransactionException;
 //exceptions
-import io.github.nishadchayanakhawa.testestimatehub.services.configurations.exceptions.DuplicateApplicationConfigurationException;
+import io.github.nishadchayanakhawa.testestimatehub.services.exceptions.DuplicateEntityException;
 import io.github.nishadchayanakhawa.testestimatehub.services.exceptions.EntityNotFoundException;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
+import io.github.nishadchayanakhawa.testestimatehub.services.exceptions.TransactionException;
 
 /**
  * <b>Class Name</b>: ApplicationConfigurationService<br>
@@ -67,20 +62,14 @@ public class ApplicationConfigurationService {
 			return applicationConfigurationSavedDTO;
 		} catch (DataIntegrityViolationException e) {
 			// throw exception when app-module-subModule combination is not unique
-			throw (DuplicateApplicationConfigurationException) new DuplicateApplicationConfigurationException(
-					String.format("Application configuration for '%s-%s-%s' already exists.",
-							applicationConfigurationToSaveDTO.getApplication(),
+			throw (DuplicateEntityException) new DuplicateEntityException("Application Configuration",
+					"application-module-subModule",
+					String.format("%s-%s-%s", applicationConfigurationToSaveDTO.getApplication(),
 							applicationConfigurationToSaveDTO.getModule(),
 							applicationConfigurationToSaveDTO.getSubModule()))
 					.initCause(e);
 		} catch (TransactionSystemException e) {
-			// retreive constraint violation messages
-			ConstraintViolationException re = (ConstraintViolationException) e.getRootCause();
-			Set<ConstraintViolation<?>> violations = re.getConstraintViolations();
-			String messages = violations.stream().map(ConstraintViolation::getMessage).collect(Collectors.joining(";"));
-			// throw exception in case of constraint violation
-			throw (ApplicationConfigurationTransactionException) new ApplicationConfigurationTransactionException(
-					messages).initCause(e);
+			throw (TransactionException) new TransactionException(e).initCause(e);
 		}
 	}
 
@@ -97,20 +86,14 @@ public class ApplicationConfigurationService {
 		logger.debug("Looking up application configuration for id: {}", id);
 		ApplicationConfigurationDTO applicationConfiguration = modelMapper.map(
 				this.applicationConfigurationRepository.findById(id)
-						.orElseThrow(() -> new EntityNotFoundException(
-								"Application Configuration", id)),
+						.orElseThrow(() -> new EntityNotFoundException("Application Configuration", id)),
 				ApplicationConfigurationDTO.class);
 		logger.debug("Application configuration found: {}", applicationConfiguration);
 		return applicationConfiguration;
 	}
 
-	public void delete(ApplicationConfigurationDTO applicationConfiguration) {
-		logger.debug("Deleting application configuration: {}", applicationConfiguration);
-		this.applicationConfigurationRepository.deleteById(applicationConfiguration.getId());
-		logger.debug("Deleted application configuration");
-	}
-	
-	public boolean exists(Long id) {
-		return this.applicationConfigurationRepository.existsById(id);
+	public void delete(Long id) {
+		logger.debug("Deleting application configuration id: {}", id);
+		this.applicationConfigurationRepository.deleteById(id);
 	}
 }

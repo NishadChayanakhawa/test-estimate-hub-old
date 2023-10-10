@@ -47,9 +47,7 @@ public class UserManagementTests extends AbstractTestNGSpringContextTests {
 	}
 
 	private void deleteUser(Long id) {
-		UserDTO userToDelete=new UserDTO();
-		userToDelete.setId(id);
-		this.userService.delete(userToDelete);
+		this.userService.delete(id);
 	}
 
 	@Test(dataProvider = "getTestDataFromJson", dataProviderClass = TestDataProvider.class, groups = { "unit-test" })

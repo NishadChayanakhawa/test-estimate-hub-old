@@ -1,0 +1,35 @@
+{
+	"testData": [
+		{
+			"applicationConfigurationToAdd": {
+				"application": "TEH",
+				"module": "Configuration",
+				"subModule": "Application Configuration",
+				"baseTestScriptCount": 2,
+				"complexityCode": "MEDIUM"
+			},
+			"duplicateApplicationConfigurationToAdd": {
+				"application": "TEH",
+				"module": "configuration",
+				"subModule": "ApplicationConfiguration",
+				"baseTestScriptCount": 3,
+				"complexityCode": "HIGH"
+			},
+			"expectedErrors_duplicateApplicationConfiguration": [
+				"application-module-subModule 'TEH-configuration-ApplicationConfiguration' already exists for another Application Configuration"
+			],
+			"invalidApplicationConfigurationToAdd": {
+				"module": "",
+				"subModule": null,
+				"baseTestScriptCount": 0
+			},
+			"expectedErrors_invalidRequest": [
+				"complexity cannot be blank",
+				"application cannot be blank",
+				"module cannot be blank",
+				"subModule cannot be blank",
+				"baseTestScriptCount cannot be lower than 1"
+			]
+		}
+	]
+}
